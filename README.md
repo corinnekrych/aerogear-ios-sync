@@ -1,9 +1,11 @@
 # AeroGear iOS Differential Synchronization Client Engine [![Build Status](https://travis-ci.org/aerogear/aerogear-ios-sync.png)](https://travis-ci.org/aerogear/aerogear-ios-sync) [![Pod Version](http://img.shields.io/cocoapods/v/AeroGearSync.svg?style=flat)](http://cocoadocs.org/docsets/AeroGearSync/)
+
+> This module is beta software, it currently supports Xcode 6.1.1
+
 This project represents a client side implementation for [AeroGear Differential 
 Synchronization (DS) Server](https://github.com/aerogear/aerogear-sync-server/).
 
 ## Prerequisites 
-This project requires Xcode6.0 to run.
 
 This project used [CocoaPods](http://cocoapods.org/) to managed its dependencies. The following command 
 must be run prior to building:
