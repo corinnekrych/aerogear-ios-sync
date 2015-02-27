@@ -67,12 +67,12 @@ public class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore where CS.T == D
     private func patchShadow(patchMessage: P) -> ShadowDocument<T>? {
         if var shadow = dataStore.getShadowDocument(patchMessage.documentId, clientId: patchMessage.clientId) {
             for edit in patchMessage.edits {
-                if (edit.clientVersion < shadow.clientVersion && !self.isSeedVersion(edit)) {
-                    shadow = restoreBackup(shadow, edit: edit)!
-                    continue
-                }
                 if edit.serverVersion < shadow.serverVersion {
                     dataStore.removeEdit(edit)
+                    continue
+                }
+                if (edit.clientVersion < shadow.clientVersion && !self.isSeedVersion(edit)) {
+                    shadow = restoreBackup(shadow, edit: edit)!
                     continue
                 }
                 if edit.serverVersion == shadow.serverVersion && edit.clientVersion == shadow.clientVersion || isSeedVersion(edit) {
