@@ -36,18 +36,30 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     }
 
     public func asJson() -> String {
-        let initStr = "{\"msgType\":\"patch\",\"id\":\"" + documentId + "\",\"clientId\":\"" + clientId + "\",\"edits\":["
-        return reduce(self.edits, initStr) { (acc: String, edit: JsonPatchEdit) -> String in
-            let initial = "{\"clientVersion\":\(edit.clientVersion),\"serverVersion\":\(edit.serverVersion),\"checksum\":\"\(edit.checksum)\",\"diffs\":["
-            let maybeComma = (edit == self.edits.last) ? "" : ", "
-            let result = reduce(enumerate(edit.diffs), initial
-                , { (acc: String, tuple: (index: Int, diff: JsonPatchDiff )) -> String in
-                    let val = (tuple.diff.value as String).stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                    let maybeComma = (tuple.index == edit.diffs.count - 1) ? "" : ", "
-                    return "\(acc){\"op\":\"" + tuple.diff.operation.rawValue + "\", \"path\":\"" + tuple.diff.path + "\", \"value\":\"" + val + "\"}\(maybeComma)"
-            })
-            return "\(acc)\(result)]}\(maybeComma)"
-            } + "]}"
+        var dict = [String: AnyObject]()
+        
+        dict["msgType"] = "patch"
+        dict["id"] = documentId
+        dict["clientId"] = clientId
+        dict["edits"] = self.edits.map { (edit:JsonPatchEdit) -> [String: AnyObject] in
+            var dict = [String: AnyObject]()
+            
+            dict["clientVersion"] = edit.clientVersion
+            dict["serverVersion"] = edit.serverVersion
+            dict["checksum"] = edit.checksum
+            
+            dict["diffs"] = edit.diffs.map { (diff:JsonPatchDiff) -> [String: AnyObject] in
+                var dict = [String: AnyObject]()
+                
+                dict["op"] = diff.operation.rawValue
+                dict["path"] = diff.path
+                dict["value"] = (diff.value as String).stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                return dict
+            }
+            return dict
+        }
+        
+        return asJsonString(dict)!
     }
 
     public func fromJson(var json:String) -> JsonPatchMessage? {

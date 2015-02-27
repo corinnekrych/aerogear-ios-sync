@@ -39,7 +39,8 @@ class JsonPatchMessageTests: XCTestCase {
     
     func testAsJson() {
         let jsonString = self.message.asJson()
-        XCTAssertEqual(jsonString, "{\"msgType\":\"patch\",\"id\":\"1\",\"clientId\":\"2\",\"edits\":[{\"clientVersion\":0,\"serverVersion\":0,\"checksum\":\"\",\"diffs\":[{\"op\":\"add\", \"path\":\"/key2\", \"value\":\"value2\"}]}]}")
+        println(jsonString)
+        XCTAssertEqual(jsonString, "{\"msgType\":\"patch\",\"id\":\"1\",\"edits\":[{\"diffs\":[{\"value\":\"value2\",\"op\":\"add\",\"path\":\"\\/key2\"}],\"clientVersion\":0,\"serverVersion\":0,\"checksum\":\"\"}],\"clientId\":\"2\"}")
     }
     
     func testFromJson() {       
