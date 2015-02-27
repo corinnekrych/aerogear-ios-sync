@@ -37,17 +37,14 @@ class JsonPatchMessageTests: XCTestCase {
         message = JsonPatchMessage(id: "1", clientId: "2", edits: [edit])        
     }
     
-    func testAsJson() {
+    func testAsJsonAndFromJson() {
         let jsonString = self.message.asJson()
-        println(jsonString)
-        XCTAssertEqual(jsonString, "{\"msgType\":\"patch\",\"id\":\"1\",\"edits\":[{\"diffs\":[{\"value\":\"value2\",\"op\":\"add\",\"path\":\"\\/key2\"}],\"clientVersion\":0,\"serverVersion\":0,\"checksum\":\"\"}],\"clientId\":\"2\"}")
+        let obj = message.fromJson(jsonString)!
+        XCTAssertEqual("2", obj.clientId)
+        XCTAssertEqual("1", obj.documentId)
+        XCTAssertEqual("2", obj.clientId)
+        XCTAssertEqual(1, obj.edits.count)
+        XCTAssertEqual(1, obj.edits[0].diffs.count)
+        XCTAssertEqual(obj.description, "JsonPatchMessage[documentId=1, clientId=2, edits=[JsonPatchEdit[clientId=2, documentId=1, clientVersion=0, serverVersion=0, checksum=, diffs=[JsonPatchDiff[operation=add, path=/key2 value=Optional(value2)]]]]]");
     }
-    
-    func testFromJson() {       
-        let jsonString = message.asJson()
-        let json = message.fromJson(jsonString)
-        
-        XCTAssertEqual(json!.description, "JsonPatchMessage[documentId=1, clientId=2, edits=[JsonPatchEdit[clientId=2, documentId=1, clientVersion=0, serverVersion=0, checksum=, diffs=[JsonPatchDiff[operation=add, path=/key2 value=Optional(value2)]]]]]");
-    }
-    
 }

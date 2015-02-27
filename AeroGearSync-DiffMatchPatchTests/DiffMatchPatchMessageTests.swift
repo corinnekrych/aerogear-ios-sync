@@ -24,7 +24,7 @@ class DiffMatchPatchMessageTests: XCTestCase {
     
     var message: DiffMatchPatchMessage!
     var util: DocUtil!
-    
+
     override func setUp() {
         super.setUp()
         let diff = DiffMatchPatchDiff(operation: DiffMatchPatchDiff.Operation.Add, text: "Hello")
@@ -33,23 +33,21 @@ class DiffMatchPatchMessageTests: XCTestCase {
         self.util = DocUtil()
     }
     
-    func testAsJson() {
+    func testAsJsonAndFronJson() {
         let shadowDoc = util.shadow("Do or do not, there is no try.")
         let serverDoc = util.document("Do or do not, there is no try!")
         
         let jsonString = message.asJson()
+        let obj = message.fromJson(jsonString)!
         
-        XCTAssertEqual(jsonString, "{\"msgType\":\"patch\",\"id\":\"1\",\"clientId\":\"2\",\"edits\":[{\"clientVersion\":1,\"serverVersion\":2,\"checksum\":\"sum\",\"diffs\":[{\"operation\":\"ADD\",\"text\":\"Hello\"}]}]}");
+        XCTAssertEqual("2", obj.clientId)
+        XCTAssertEqual("1", obj.documentId)
+        XCTAssertEqual("2", obj.clientId)
+        XCTAssertEqual(1, obj.edits.count)
+        XCTAssertEqual(1, obj.edits[0].diffs.count)
+        XCTAssertEqual(obj.description, "DiffMatchPatchMessage[documentId=1, clientId=2, edits=[DiffMatchPatchEdit[clientId=2, documentId=1, clientVersion=1, serverVersion=2, checksum=sum, diffs=[DiffMatchPatchDiff[operation=ADD, text=Hello]]]]]");
     }
     
-    func testFromJson() {
-        let shadowDoc = util.shadow("Do or do not, there is no try.")
-        let serverDoc = util.document("Do or do not, there is no try!")
-        
-        let jsonString = message.asJson()
-        let json = message.fromJson(jsonString)
-        
-        XCTAssertEqual(json!.description, "DiffMatchPatchMessage[documentId=1, clientId=2, edits=[DiffMatchPatchEdit[clientId=2, documentId=1, clientVersion=1, serverVersion=2, checksum=sum, diffs=[DiffMatchPatchDiff[operation=ADD, text=Hello]]]]]");
-    }
+
     
 }
