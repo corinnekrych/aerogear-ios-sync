@@ -18,7 +18,7 @@
 import Foundation
 
 /**
-The ClientSyncEngine is responsible for driving client side of the [differential synchronization algorithm]().
+The ClientSyncEngine is responsible for driving client side of the [differential synchronization algorithm](http://research.google.com/pubs/pub35605.html).
 During construction the engine gets injected with an instance of ClientSynchronizer
 which takes care of diff/patching operations, and an instance of ClientDataStore for
 storing data.
@@ -26,14 +26,16 @@ storing data.
 A synchronizer in AeroGear is a module that serves two purposes which are closely related. One, is to provide
 storage for the data type, and the second is to provide the patching algorithm to be used on that data type.
 The name synchronizer is because they take care of the synchronization part of the Differential Synchronization
-algorithm. For example, one synchronizer might support plain text while another supports JSON Objects as the
+algorithm. For example, one synchronizer, such as [DiffMatchPatchSynchronizer](https://github.com/aerogear/aerogear-ios-sync/blob/master/AeroGearSync-DiffMatchPatch/DiffMatchPatchSynchronizer.swift), might support plain text while another, such as [JsonPatchSynchronizer](https://github.com/aerogear/aerogear-ios-sync/blob/master/AeroGearSync-JSONPatch/JsonPatchSynchronizer.swift) supports JSON Objects as the
 content of documents being stored. But a patching algorithm used for plain text might not be appropriate for JSON
 Objects.
 <br/><br/>
 To construct a client that uses the JSON Patch you would use the following code:
 <br/><br/>
-```var engine: ClientSyncEngine<JsonPatchSynchronizer, InMemoryDataStore<JsonNode, JsonPatchEdit>>
-engine = ClientSyncEngine(synchronizer: JsonPatchSynchronizer(), dataStore: InMemoryDataStore())```
+```
+var engine: ClientSyncEngine<JsonPatchSynchronizer, InMemoryDataStore<JsonNode, JsonPatchEdit>>
+engine = ClientSyncEngine(synchronizer: JsonPatchSynchronizer(), dataStore: InMemoryDataStore())
+```
 <br/><br/>
 The ClientSynchronizer generic type is the type that this implementation can handle.
 The DataStore generic type is the type that this implementation can handle. 
