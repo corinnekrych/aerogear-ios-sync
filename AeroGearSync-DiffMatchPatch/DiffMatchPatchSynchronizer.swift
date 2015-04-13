@@ -40,7 +40,7 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     :returns: Edit the edit representing the diff between the shadow document and the client document.
     */
     public func clientDiff(clientDocument: ClientDocument<String>, shadow: ShadowDocument<String>) -> DiffMatchPatchEdit {
-        let diffs = dmp.diff_mainOfOldString(clientDocument.content, andNewString: shadow.clientDocument.content).copy() as [Diff]
+        let diffs = dmp.diff_mainOfOldString(clientDocument.content, andNewString: shadow.clientDocument.content).copy() as! [Diff]
         return edit(shadow.clientDocument, shadow: shadow, diffs: diffs)
     }
     
@@ -52,8 +52,8 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     :returns: ClientDocument a new patched document.
     */
     public func patchDocument(edit: DiffMatchPatchEdit, clientDocument: ClientDocument<String>) -> ClientDocument<String> {
-        let results = dmp.patch_apply(patchesFrom(edit), toString: clientDocument.content)
-        return ClientDocument<String>(id: clientDocument.id, clientId: clientDocument.clientId, content: results[0] as String)
+        let results = dmp.patch_apply(patchesFrom(edit) as [AnyObject], toString: clientDocument.content)
+        return ClientDocument<String>(id: clientDocument.id, clientId: clientDocument.clientId, content: results[0] as! String)
     }
     
     /**
@@ -80,7 +80,7 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     :returns: Edit the edit representing the diff between the client document and it's shadow document.
     */
     public func serverDiff(serverDocument: ClientDocument<String>, shadow: ShadowDocument<String>) -> DiffMatchPatchEdit {
-        let diffs = dmp.diff_mainOfOldString(shadow.clientDocument.content, andNewString: serverDocument.content).copy() as [Diff]
+        let diffs = dmp.diff_mainOfOldString(shadow.clientDocument.content, andNewString: serverDocument.content).copy() as! [Diff]
         return edit(shadow.clientDocument, shadow: shadow, diffs: diffs)
     }
 

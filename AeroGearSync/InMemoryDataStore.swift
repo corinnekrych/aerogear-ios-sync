@@ -127,7 +127,11 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     :returns: [D] the edits for the document.
     */
     public func getEdits(documentId: String, clientId: String) -> [E]? {
-        return edits[InMemoryDataStore.key(documentId, clientId)]?
+        if edits[InMemoryDataStore.key(documentId, clientId)] == nil {
+            return nil
+        } else {
+            return edits[InMemoryDataStore.key(documentId, clientId)]!
+        }
     }
     
     /**
@@ -139,8 +143,8 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     */
     public func removeEdit(edit: E) {
         let key = InMemoryDataStore.key(edit.documentId, edit.clientId)
-        if var pendingEdits = edits[key]? {
-            edits.updateValue(pendingEdits.filter { edit.serverVersion != $0.serverVersion }, forKey: key)
+        if var pendingEdits = edits[key] {
+            edits.updateValue(pendingEdits!.filter { edit.serverVersion != $0.serverVersion }, forKey: key)
         }
     }
     

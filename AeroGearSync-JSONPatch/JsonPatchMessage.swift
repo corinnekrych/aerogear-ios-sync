@@ -50,7 +50,11 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     /**
     Default init.
     */
-    public init() {}
+    public init() {
+        self.documentId = nil
+        self.clientId = nil
+        self.edits = nil
+    }
     
     /**
     Default init.
@@ -106,8 +110,8 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     */
     public func fromJson(var json:String) -> JsonPatchMessage? {
         if let dict = asDictionary(json) {
-            let id = dict["id"] as String
-            let clientId = dict["clientId"] as String
+            let id = dict["id"] as! String
+            let clientId = dict["clientId"] as! String
             var edits = [JsonPatchEdit]()
             
             if let e = dict["edits"] as? [[String: AnyObject]] {
@@ -115,16 +119,16 @@ public struct JsonPatchMessage: PatchMessage, Printable {
                     var diffs = [JsonPatchDiff]()
                     if let d = edit["diffs"] as? [[String: AnyObject]] {
                         for diff in d {
-                            diffs.append(JsonPatchDiff(operation: JsonPatchDiff.Operation(rawValue: diff["op"] as String)!,
-                                path: diff["path"] as String, value: diff["value"] as? String))
+                            diffs.append(JsonPatchDiff(operation: JsonPatchDiff.Operation(rawValue: diff["op"] as! String)!,
+                                path: diff["path"] as! String, value: diff["value"] as? String))
                         }
                     }
                     
                     edits.append(JsonPatchEdit(clientId: clientId,
                         documentId: id,
-                        clientVersion: edit["clientVersion"] as Int,
-                        serverVersion: edit["serverVersion"] as Int,
-                        checksum: edit["checksum"] as String,
+                        clientVersion: edit["clientVersion"] as! Int,
+                        serverVersion: edit["serverVersion"] as! Int,
+                        checksum: edit["checksum"] as! String,
                         diffs: diffs))
                 }
             }
@@ -154,6 +158,6 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     public func asJsonString(dict: [String:  AnyObject]) -> String? {
         var jsonErrorOptional: NSError?
         var data = NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions(0), error: &jsonErrorOptional)
-        return NSString(data: data!, encoding: NSUTF8StringEncoding)
+        return NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
     }
 }

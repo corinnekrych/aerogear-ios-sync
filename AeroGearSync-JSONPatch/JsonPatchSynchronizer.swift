@@ -38,7 +38,7 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
     :returns: Edit the edit representing the diff between the shadow document and the client document.
     */
     public func clientDiff(clientDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit {
-        let diffsList:[NSDictionary] = JSONPatch.createPatchesComparingCollectionsOld(clientDocument.content, toNew:shadow.clientDocument.content) as [NSDictionary]
+        let diffsList:[NSDictionary] = JSONPatch.createPatchesComparingCollectionsOld(clientDocument.content, toNew:shadow.clientDocument.content) as! [NSDictionary]
         return edit(shadow.clientDocument, shadow: shadow, diffs: diffsList)
     }
 
@@ -48,10 +48,10 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
     
     private func asAeroGearDiffs(diffs: [NSDictionary]) -> [JsonPatchDiff] {
         return diffs.map {
-            let val = $0 as [String: AnyObject]
-            let op: String = val["op"] as String
+            let val = $0 as! [String: AnyObject]
+            let op: String = val["op"] as! String
             let value: AnyObject? = val["value"]
-            let path: String = val["path"] as String
+            let path: String = val["path"] as! String
             return JsonPatchDiff(operation: JsonPatchSynchronizer.asAeroGearOperation(op), path: path, value: value)
         }
     }
@@ -86,7 +86,7 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
         // we need a mutable copy of the json node
         // https://github.com/grgcombs/JSONTools/blob/master/JSONTools%2FJSONPatch.m#L424
         let collection = clientDocument.content as NSDictionary
-        var mutableCollection: NSMutableDictionary = collection.mutableCopy() as NSMutableDictionary
+        var mutableCollection: NSMutableDictionary = collection.mutableCopy() as! NSMutableDictionary
         
         // To get a patched document, we need to add a _get operation at he end of each diff as described in
         // https://github.com/grgcombs/JSONTools/blob/master/JSONTools%2FJSONPatch.h#L26
@@ -95,8 +95,8 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
         var diffWithGetOperation = edit.diffs
         diffWithGetOperation.append(JsonPatchDiff(operation: JsonPatchDiff.Operation.Get))
         
-        let results: AnyObject! = JSONPatch.applyPatches(asJsonPatchDiffs(diffWithGetOperation), toCollection: mutableCollection)
-        return ClientDocument<JsonNode>(id: clientDocument.id, clientId: clientDocument.clientId, content: results as JsonNode)
+        let results: AnyObject! = JSONPatch.applyPatches(asJsonPatchDiffs(diffWithGetOperation) as [AnyObject], toCollection: mutableCollection)
+        return ClientDocument<JsonNode>(id: clientDocument.id, clientId: clientDocument.clientId, content: results as! JsonNode)
     }
     
     /**
@@ -123,7 +123,7 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
     :returns: Edit the edit representing the diff between the client document and it's shadow document.
     */
     public func serverDiff(serverDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit {
-        let diffsList:[NSDictionary] = JSONPatch.createPatchesComparingCollectionsOld(shadow.clientDocument.content, toNew:serverDocument.content) as [NSDictionary]
+        let diffsList:[NSDictionary] = JSONPatch.createPatchesComparingCollectionsOld(shadow.clientDocument.content, toNew:serverDocument.content) as! [NSDictionary]
         return edit(shadow.clientDocument, shadow: shadow, diffs: diffsList)
     }
 
@@ -175,7 +175,7 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
         // convert client document to json
         var jsonErrorOptional: NSError?
         var data = NSJSONSerialization.dataWithJSONObject(clientDocument.content, options:NSJSONWritingOptions(0), error: &jsonErrorOptional)
-        objectNode += NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        objectNode += NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
     }
 }
 
