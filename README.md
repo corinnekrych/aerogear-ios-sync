@@ -1,6 +1,6 @@
 # aerogear ios sync [![Build Status](https://travis-ci.org/aerogear/aerogear-ios-sync.png)](https://travis-ci.org/aerogear/aerogear-ios-sync) [![Pod Version](http://img.shields.io/cocoapods/v/AeroGearSync.svg?style=flat)](http://cocoadocs.org/docsets/AeroGearSync/)
 
-> **NOTE:**  The library has been tested with Xcode 6.3
+> This module currently build with Xcode 6.4 and supports iOS8.
 
 AeroGear iOS Differential Synchronization Client Engine represents a client side implementation for [AeroGear Differential 
 Synchronization (DS) Server](https://github.com/aerogear/aerogear-sync-server/).
@@ -20,7 +20,7 @@ Synchronization (DS) Server](https://github.com/aerogear/aerogear-sync-server/).
 
 2. Get the dependencies
 
-The project uses [cocoapods](http://cocoapods.org) 0.36 release for handling its dependencies. As a pre-requisite, install [cocoapods](http://blog.cocoapods.org/CocoaPods-0.36/) and then install the pod. On the root directory of the project run:
+The project uses [cocoapods](http://cocoapods.org) 0.36+ release for handling its dependencies. As a pre-requisite, install [cocoapods](http://cocoapods.org) and then install the pod. On the root directory of the project run:
 ```bash
 pod install
 ```
@@ -30,7 +30,7 @@ pod install
 To add the library in your project, you can either use [Cocoapods](http://cocoapods.org) or manual install in your project. See the respective sections below for instructions:
 
 ### Using [Cocoapods](http://cocoapods.org)
-Support for Swift frameworks is supported from [CocoaPods-0.36 release](http://blog.cocoapods.org/CocoaPods-0.36/) upwards. In your ```Podfile``` add:
+Support for Swift frameworks is supported from [CocoaPods-0.36+ release](http://cocoapods.org) upwards. In your ```Podfile``` add:
 
 ```
 source 'https://github.com/CocoaPods/Specs.git'
