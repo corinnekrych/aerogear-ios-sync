@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		483AE2F61A814B3B00C11EBC /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483AE2F51A814B3B00C11EBC /* Diff.swift */; };
 		4846487A1A9B450300A2D5DE /* JsonPatchMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484648791A9B450300A2D5DE /* JsonPatchMessageTests.swift */; };
+		485F110F1BB9933200460C32 /* AeroGearSync.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 488B6B5C196B19BC000297C9 /* AeroGearSync.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		48D890B31A961F5000C424F7 /* DiffMatchPatchMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D890B21A961F5000C424F7 /* DiffMatchPatchMessageTests.swift */; };
 		48DCC1841A8CBB7100D22FC7 /* AeroGearSync.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 488B6B5C196B19BC000297C9 /* AeroGearSync.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		48DCC1851A8CBB7900D22FC7 /* AeroGearSyncJSONPatch.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6F4F45451A84AF4200970512 /* AeroGearSyncJSONPatch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -93,6 +94,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		485F110E1BB9932200460C32 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				485F110F1BB9933200460C32 /* AeroGearSync.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		48DCC1831A8CBB5A00D22FC7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -536,6 +547,7 @@
 				6F4F45431A84AF4200970512 /* Resources */,
 				CBF012DD59C6222052BAB29C /* Copy Pods Resources */,
 				AA18A5B8E64620CFB1A0E087 /* Embed Pods Frameworks */,
+				485F110E1BB9932200460C32 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -990,10 +1002,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				METAL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1033,6 +1046,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1204,7 +1218,17 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"JSONTools\"",
+					"-framework",
+					"\"KiteJSONValidator\"",
+					"-ObjC",
+				);
+				"OTHER_LIBTOOLFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = AeroGearSyncJSONPatch;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1225,7 +1249,16 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"JSONTools\"",
+					"-framework",
+					"\"KiteJSONValidator\"",
+					"-ObjC",
+				);
 				PRODUCT_NAME = AeroGearSyncJSONPatch;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";

@@ -24,7 +24,7 @@ A shadow document is updated after a successful patch has been performed.
 <br/><br/>
 ```<T>``` the type of the Document that this instance shadows.
 */
-public class ShadowDocument<T>: Printable {
+public class ShadowDocument<T>: CustomStringConvertible {
     /**
     Represents the latest client version that this shadow document was based on.
     */
@@ -43,9 +43,9 @@ public class ShadowDocument<T>: Printable {
     /**
     Default init.
     
-    :param: clientVersion he latest client version that this shadow document was based on.
-    :param: serverVersion the latest server version that the this shadow document was based on.
-    :param: clientDocument.
+    - parameter clientVersion: he latest client version that this shadow document was based on.
+    - parameter serverVersion: the latest server version that the this shadow document was based on.
+    - parameter clientDocument.:
     */
     public init(clientVersion: Int, serverVersion: Int, clientDocument: ClientDocument<T>) {
         self.clientVersion = clientVersion

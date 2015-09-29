@@ -23,7 +23,7 @@ associates a client identifier with a Document.
 <br/><br/>
 ```<T>``` the type of this documents content.
 */
-public class ClientDocument<T>: Document<T>, Printable {
+public class ClientDocument<T>: Document<T> {
     
     /**
     Identifies a client or session to which this Document belongs.
@@ -33,9 +33,9 @@ public class ClientDocument<T>: Document<T>, Printable {
     /**
     Default init.
     
-    :param: id of the document.
-    :param: clientId or session to which this Document belongs.
-    :param: content of the document.
+    - parameter id: of the document.
+    - parameter clientId: or session to which this Document belongs.
+    - parameter content: of the document.
     */
     public init(id: String, clientId: String, content: T) {
         self.clientId = clientId

@@ -25,7 +25,7 @@ Edits that represent updates to be performed on the opposing sides document.
 <br/><br/>
 ```<E>``` the type of the Edit that this PatchMessage holds.
 */
-public protocol PatchMessage: Printable, Payload {
+public protocol PatchMessage: CustomStringConvertible, Payload {
     
     typealias E: Edit
     
@@ -47,9 +47,9 @@ public protocol PatchMessage: Printable, Payload {
     /**
     Default init.
     
-    :param: pathMessage unique id.
-    :param: client id to identify the client sesion.
-    :param: list of edits that makes the content of the patch.
+    - parameter pathMessage: unique id.
+    - parameter client: id to identify the client sesion.
+    - parameter list: of edits that makes the content of the patch.
     */
     init(id: String, clientId: String, edits: [E])
 }

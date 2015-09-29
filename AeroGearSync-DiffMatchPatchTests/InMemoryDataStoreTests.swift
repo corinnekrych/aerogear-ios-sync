@@ -95,7 +95,7 @@ class InMemoryDataStoreTests: XCTestCase {
         XCTAssertEqual(util.content, clientDocument.content)
     }
 
-    func defaultEdit(# clientVersion: Int, serverVersion: Int) -> DiffMatchPatchEdit {
+    func defaultEdit(clientVersion  clientVersion: Int, serverVersion: Int) -> DiffMatchPatchEdit {
         return DiffMatchPatchEdit(clientId: util.clientId,
             documentId: util.documentId,
             clientVersion: clientVersion,

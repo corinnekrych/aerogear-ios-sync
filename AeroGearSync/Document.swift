@@ -22,7 +22,7 @@ Represents the server side version of a document.
 <br/><br/>
 ```<T>``` the type of the document contents.
 */
-public class Document<T>: Printable {
+public class Document<T>: CustomStringConvertible {
     
     /**
     The identifier for a document.
@@ -37,8 +37,8 @@ public class Document<T>: Printable {
     /**
     Default init.
     
-    :param: document id.
-    :param: content of the document of generic type T.
+    - parameter document: id.
+    - parameter content: of the document of generic type T.
     */
     init(id: String, content: T) {
         self.id = id

@@ -42,7 +42,7 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Saves a client document.
     
-    :param: clientDocument the ClientDocument to save.
+    - parameter clientDocument: the ClientDocument to save.
     */
     public func saveClientDocument(document: ClientDocument<T>) {
         let key = InMemoryDataStore.key(document.id, document.clientId)
@@ -52,9 +52,9 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Retrieves the ClientDocument matching the passed-in document documentId.
     
-    :param: documentId the document id of the shadow document.
-    :param: clientId the client for which to retrieve the shadow document.
-    :returns:  ClientDocument the client document matching the documentId.
+    - parameter documentId: the document id of the shadow document.
+    - parameter clientId: the client for which to retrieve the shadow document.
+    - returns:  ClientDocument the client document matching the documentId.
     */
     public func getClientDocument(documentId: String, clientId: String) -> ClientDocument<T>? {
         return documents[InMemoryDataStore.key(documentId, clientId)]
@@ -63,7 +63,7 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Saves a shadow document.
     
-    :param: shadowDocument the ShadowDocument to save.
+    - parameter shadowDocument: the ShadowDocument to save.
     */
     public func saveShadowDocument(shadow: ShadowDocument<T>) {
         let key = InMemoryDataStore.key(shadow.clientDocument.id, shadow.clientDocument.clientId)
@@ -73,9 +73,9 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Retrieves the ShadowDocument matching the passed-in document documentId.
     
-    :param: documentId the document id of the shadow document.
-    :param: clientId the client for which to retrieve the shadow document.
-    :returns:  ShadowDocument the shadow document matching the documentId.
+    - parameter documentId: the document id of the shadow document.
+    - parameter clientId: the client for which to retrieve the shadow document.
+    - returns:  ShadowDocument the shadow document matching the documentId.
     */
     public func getShadowDocument(documentId: String, clientId: String) -> ShadowDocument<T>? {
         return shadows[InMemoryDataStore.key(documentId, clientId)]
@@ -84,7 +84,7 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Saves a backup shadow document.
     
-    :param: backupShadow the BackupShadowDocument to save.
+    - parameter backupShadow: the BackupShadowDocument to save.
     */
     public func saveBackupShadowDocument(backup: BackupShadowDocument<T>) {
         let key = InMemoryDataStore.key(backup.shadowDocument.clientDocument.id, backup.shadowDocument.clientDocument.clientId)
@@ -94,9 +94,9 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Retrieves the BackupShadowDocument matching the passed-in document documentId.
     
-    :param: documentId the document identifier of the backup shadow document.
-    :param: clientId the client identifier for which to fetch the document.
-    :returns: BackupShadowDocument the backup shadow document matching the documentId.
+    - parameter documentId: the document identifier of the backup shadow document.
+    - parameter clientId: the client identifier for which to fetch the document.
+    - returns: BackupShadowDocument the backup shadow document matching the documentId.
     */
     public func getBackupShadowDocument(documentId: String, clientId: String) -> BackupShadowDocument<T>? {
         return backups[InMemoryDataStore.key(documentId, clientId)]
@@ -105,9 +105,9 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Saves an Edit to the data store.
     
-    :param: edit the edit to be saved.
-    :param: documentId the document identifier for the edit.
-    :param: clientId the client identifier for the edit.
+    - parameter edit: the edit to be saved.
+    - parameter documentId: the document identifier for the edit.
+    - parameter clientId: the client identifier for the edit.
     */
     public func saveEdits(edit: E) {
         let key = InMemoryDataStore.key(edit.documentId, edit.clientId)
@@ -122,9 +122,9 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Retreives the array of Edits for the specified document documentId.
     
-    :param: documentId the document identifier of the edit.
-    :param: clientId the client identifier for which to fetch the document.
-    :returns: [D] the edits for the document.
+    - parameter documentId: the document identifier of the edit.
+    - parameter clientId: the client identifier for which to fetch the document.
+    - returns: [D] the edits for the document.
     */
     public func getEdits(documentId: String, clientId: String) -> [E]? {
         if edits[InMemoryDataStore.key(documentId, clientId)] == nil {
@@ -137,13 +137,13 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Removes the edit from the store.
     
-    :param: edit the edit to be removed.
-    :param: documentId the document identifier for the edit.
-    :param: clientId the client identifier for the edit.
+    - parameter edit: the edit to be removed.
+    - parameter documentId: the document identifier for the edit.
+    - parameter clientId: the client identifier for the edit.
     */
     public func removeEdit(edit: E) {
         let key = InMemoryDataStore.key(edit.documentId, edit.clientId)
-        if var pendingEdits = edits[key] {
+        if let pendingEdits = edits[key] {
             edits.updateValue(pendingEdits!.filter { edit.serverVersion != $0.serverVersion }, forKey: key)
         }
     }
@@ -151,8 +151,8 @@ public class InMemoryDataStore<T, E: Edit>: DataStore {
     /**
     Removes all edits for the specific client and document pair.
     
-    :param: documentId the document identifier of the edit.
-    :param: clientId the client identifier.
+    - parameter documentId: the document identifier of the edit.
+    - parameter clientId: the client identifier.
     */
     public func removeEdits(documentId: String, clientId: String) {
         edits.removeValueForKey(Key(id: documentId, clientId: clientId))
@@ -185,8 +185,8 @@ struct Key: Hashable {
     /**
     Default init.
     
-    :param: id of edit.
-    :param: clientId.
+    - parameter id: of edit.
+    - parameter clientId.:
     */
     init(id: String, clientId: String) {
         self.id = id

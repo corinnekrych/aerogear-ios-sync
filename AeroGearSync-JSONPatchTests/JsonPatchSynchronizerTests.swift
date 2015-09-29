@@ -31,8 +31,8 @@ class JsonPatchSynchronizerTests: XCTestCase {
     }
     
     func testClientDiffAddPatch() {
-        var doc1:[String:AnyObject] = ["key1": "value1"]
-        var doc2:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
+        let doc1:[String:AnyObject] = ["key1": "value1"]
+        let doc2:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
         let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
@@ -41,12 +41,12 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(1, edit.diffs.count)
         XCTAssertEqual(JsonPatchDiff.Operation.Add, edit.diffs[0].operation)
         let value: AnyObject = edit.diffs[0].value!
-        XCTAssertEqual("value2", value as! String)
+        XCTAssertEqual("value2", value as? String)
     }
     
     func testClientDiffRemove() {
-        var doc1:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
-        var doc2:[String:AnyObject] = ["key1": "value1"]
+        let doc1:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
+        let doc2:[String:AnyObject] = ["key1": "value1"]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
         let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
@@ -59,8 +59,8 @@ class JsonPatchSynchronizerTests: XCTestCase {
     }
     
     func testClientDiffReplace() {
-        var doc1:[String:AnyObject] = ["key1": "value1", "key2": ["key2.1": "value2.1"], "key3": "value3"]
-        var doc2:[String:AnyObject] = ["key1": "value1", "key2": "value3", "key3": ["key2.1": "value2.1"]]
+        let doc1:[String:AnyObject] = ["key1": "value1", "key2": ["key2.1": "value2.1"], "key3": "value3"]
+        let doc2:[String:AnyObject] = ["key1": "value1", "key2": "value3", "key3": ["key2.1": "value2.1"]]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
         let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
@@ -68,7 +68,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(2, edit.diffs.count)
         let ops = edit.diffs.map {(op: $0.operation, path: $0.path, val: $0.value)}
-        let sortedOps = ops.sorted {$0.1 < $1.1}
+        let sortedOps = ops.sort {$0.1 < $1.1}
         XCTAssertEqual(JsonPatchDiff.Operation.Replace, sortedOps[1].op)
         XCTAssertEqual("/key3", sortedOps[1].path)
         let val: JsonNode = sortedOps[1].val! as! JsonNode
@@ -76,8 +76,8 @@ class JsonPatchSynchronizerTests: XCTestCase {
     }
     
     func testClientDiffRemoveAdd() {
-        var doc1:[String:AnyObject] = ["key1": "value1", "key2": ["key2.1": "value2.1"], "key3": "value3"]
-        var doc2:[String:AnyObject] = ["key1": "value1", "key2": ["key2.1": "value2.1", "key3": "value3"]]
+        let doc1:[String:AnyObject] = ["key1": "value1", "key2": ["key2.1": "value2.1"], "key3": "value3"]
+        let doc2:[String:AnyObject] = ["key1": "value1", "key2": ["key2.1": "value2.1", "key3": "value3"]]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
         let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
@@ -85,7 +85,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(2, edit.diffs.count)
         let ops = edit.diffs.map {(op: $0.operation, path: $0.path, val: $0.value)}
-        let sortedOps = ops.sorted {$0.0.rawValue < $1.0.rawValue}
+        let sortedOps = ops.sort {$0.0.rawValue < $1.0.rawValue}
         
         XCTAssertEqual(JsonPatchDiff.Operation.Remove, sortedOps[1].op)
         XCTAssertEqual("/key3", sortedOps[1].path)
@@ -97,8 +97,8 @@ class JsonPatchSynchronizerTests: XCTestCase {
     }
     
     func testServerDiff() {
-        var doc1:[String:AnyObject] = ["key1": "value1"]
-        var doc2:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
+        let doc1:[String:AnyObject] = ["key1": "value1"]
+        let doc2:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
         let shadowDoc = util.shadow(doc1)
         let serverDoc = util.document(doc2)
         let edit = clientSynchronizer.serverDiff(serverDoc, shadow: shadowDoc)
@@ -108,12 +108,12 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(JsonPatchDiff.Operation.Add, edit.diffs[0].operation)
         XCTAssertEqual("/key2", edit.diffs[0].path)
         let value: AnyObject = edit.diffs[0].value!
-        XCTAssertEqual("value2", value as! String)
+        XCTAssertEqual("value2", value as? String)
     }
     
     func testPatchShadow() {
-        var cientDoc:[String:AnyObject] = ["name": "fletch"]
-        var sourceDoc:[String:AnyObject] = ["name": "Fletch", "firstname": "Robert"]
+        let cientDoc:[String:AnyObject] = ["name": "fletch"]
+        let sourceDoc:[String:AnyObject] = ["name": "Fletch", "firstname": "Robert"]
         let client = util.document(cientDoc)
         let source = util.shadow(sourceDoc)
         let edit = clientSynchronizer.serverDiff(client, shadow: source)
@@ -124,12 +124,12 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(2, edit.diffs.count)
         let content = patchedDoc.clientDocument.content as JsonNode
-        XCTAssertEqual(content["name"] as! String, "fletch")
+        XCTAssertEqual(content["name"] as? String, "fletch")
     }
     
     func testPatchDocumentWithAnAdd() {
-        var doc1:[String:AnyObject] = ["name": "fletch"]
-        var doc2:[String:AnyObject] = ["name": "Fletch", "firstname": "Robert"]
+        let doc1:[String:AnyObject] = ["name": "fletch"]
+        let doc2:[String:AnyObject] = ["name": "Fletch", "firstname": "Robert"]
         let source = util.document(doc1)
         let updated = util.shadow(doc2)
         let edit = clientSynchronizer.clientDiff(source, shadow: updated)
@@ -139,13 +139,13 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(2, edit.diffs.count)
-        XCTAssertEqual(patchedDoc.content["name"] as! String, "Fletch")
-        XCTAssertEqual(patchedDoc.content["firstname"] as! String, "Robert")
+        XCTAssertEqual(patchedDoc.content["name"] as? String, "Fletch")
+        XCTAssertEqual(patchedDoc.content["firstname"] as? String, "Robert")
     }
     
     func testPatchDocumentWithAnUpdateAddRemove() {
-        var doc1:[String:AnyObject] = ["name": "fletch", "friends": [["name": "blanc", "firstname": "sebastien"], ["name": "Unkown", "firstname": "Bella"]]]
-        var doc2:[String:AnyObject] = ["name": "Fletch", "firstname": "Robert", "friends": [["name": "Blanc", "firstname": "Sebastien"]]]
+        let doc1:[String:AnyObject] = ["name": "fletch", "friends": [["name": "blanc", "firstname": "sebastien"], ["name": "Unkown", "firstname": "Bella"]]]
+        let doc2:[String:AnyObject] = ["name": "Fletch", "firstname": "Robert", "friends": [["name": "Blanc", "firstname": "Sebastien"]]]
         let source = util.document(doc1)
         let updated = util.shadow(doc2)
         let edit = clientSynchronizer.clientDiff(source, shadow: updated)
@@ -155,12 +155,12 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(5, edit.diffs.count)
-        XCTAssertEqual(patchedDoc.content["name"] as! String, "Fletch")
-        XCTAssertEqual(patchedDoc.content["firstname"] as! String, "Robert")
+        XCTAssertEqual(patchedDoc.content["name"] as? String, "Fletch")
+        XCTAssertEqual(patchedDoc.content["firstname"] as? String, "Robert")
         let friends = patchedDoc.content["friends"] as! [AnyObject]
         let friend = friends[0] as! JsonNode
-        XCTAssertEqual(friend["firstname"] as! String, "Sebastien")
-        XCTAssertEqual(friend["name"] as! String, "Blanc")
+        XCTAssertEqual(friend["firstname"] as? String, "Sebastien")
+        XCTAssertEqual(friend["name"] as? String, "Blanc")
     }
     
 }
