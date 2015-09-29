@@ -28,11 +28,11 @@ class JsonPatchMessageTests: XCTestCase {
     override func setUp() {
         super.setUp()
         self.util = DocUtil()
-        var doc1:[String:AnyObject] = ["key1": "value1"]
-        var doc2:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
+        let doc1:[String:AnyObject] = ["key1": "value1"]
+        let doc2:[String:AnyObject] = ["key1": "value1", "key2": "value2"]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
-        var clientSynchronizer = JsonPatchSynchronizer()
+        let clientSynchronizer = JsonPatchSynchronizer()
         let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
         message = JsonPatchMessage(id: "1", clientId: "2", edits: [edit])        
     }

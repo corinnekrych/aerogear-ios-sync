@@ -86,7 +86,7 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
         // we need a mutable copy of the json node
         // https://github.com/grgcombs/JSONTools/blob/master/JSONTools%2FJSONPatch.m#L424
         let collection = clientDocument.content as NSDictionary
-        var mutableCollection: NSMutableDictionary = collection.mutableCopy() as! NSMutableDictionary
+        let mutableCollection: NSMutableDictionary = collection.mutableCopy() as! NSMutableDictionary
         
         // To get a patched document, we need to add a _get operation at he end of each diff as described in
         // https://github.com/grgcombs/JSONTools/blob/master/JSONTools%2FJSONPatch.h#L26
@@ -173,7 +173,7 @@ public class JsonPatchSynchronizer: ClientSynchronizer {
     public func addContent(clientDocument:ClientDocument<JsonNode>, fieldName:String, inout objectNode:String) {
         objectNode += "\"content\":"
         // convert client document to json
-        var data = try! NSJSONSerialization.dataWithJSONObject(clientDocument.content, options:NSJSONWritingOptions(rawValue: 0))
+        let data = try! NSJSONSerialization.dataWithJSONObject(clientDocument.content, options:NSJSONWritingOptions(rawValue: 0))
         objectNode += NSString(data: data, encoding: NSUTF8StringEncoding)! as String
     }
 }
