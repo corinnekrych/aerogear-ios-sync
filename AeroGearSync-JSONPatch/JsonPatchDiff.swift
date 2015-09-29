@@ -36,7 +36,7 @@ public struct JsonPatchDiff: Difference {
     */
     public let value: AnyObject?
     
-    public enum Operation : String, Printable {
+    public enum Operation : String, CustomStringConvertible {
         case Add = "add"
         case Copy = "copy"
         case Remove = "remove"
@@ -53,9 +53,9 @@ public struct JsonPatchDiff: Difference {
     /**
     Default init.
     
-    :param: operation either Add. copy, Replace...
-    :param: path in the JSON document on where to apply the patch.
-    :param: value the new JSON node. Could be nil for Remove.
+    - parameter operation: either Add. copy, Replace...
+    - parameter path: in the JSON document on where to apply the patch.
+    - parameter value: the new JSON node. Could be nil for Remove.
     */
     public init(operation: Operation, path: String, value: AnyObject?) {
         self.operation = operation
@@ -66,7 +66,7 @@ public struct JsonPatchDiff: Difference {
     /**
     Convenience init.
     
-    :param: operation used got Get operation only.
+    - parameter operation: used got Get operation only.
     */
     public init(operation: Operation) {
         self.operation = operation

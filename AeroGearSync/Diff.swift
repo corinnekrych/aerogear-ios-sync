@@ -24,6 +24,6 @@ A marker interface that represents a diff or two versions of a document/object.
 The actual implementation of a diff will vary depending on the type of content the
 ClientSynchronizer can handle.
 */
-public protocol Difference: Printable {
+public protocol Difference: CustomStringConvertible {
  // leave this coment for jazzy to generate doc ok
 }

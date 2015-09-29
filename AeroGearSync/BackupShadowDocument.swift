@@ -22,7 +22,7 @@ A backup of the ShadowDocument.
 <br/><br/>
 ```<T>``` the type of the Document that this instance backups.
 */
-public class BackupShadowDocument<T>: Printable {
+public class BackupShadowDocument<T>: CustomStringConvertible {
     
     /**
     Represents the version of this backup shadow.

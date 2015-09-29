@@ -32,7 +32,7 @@ public struct DiffMatchPatchDiff: Difference {
     */
     public let text: String
     
-    public enum Operation : String, Printable {
+    public enum Operation : String, CustomStringConvertible {
         case Add = "ADD"
         case Delete = "DELETE"
         case Unchanged = "UNCHANGED"
@@ -44,8 +44,8 @@ public struct DiffMatchPatchDiff: Difference {
     /**
     Default init.
     
-    :param: operation either ADD, DELETE, UNCHANGED.
-    :param: text the content of the diff itself.
+    - parameter operation: either ADD, DELETE, UNCHANGED.
+    - parameter text: the content of the diff itself.
     */
     public init(operation: Operation, text: String) {
         self.operation = operation

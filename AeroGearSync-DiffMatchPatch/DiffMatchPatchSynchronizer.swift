@@ -35,9 +35,9 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     This method would be called when the client receives an update from the server and need
     to produce an Edit to be able to patch the ClientDocument.
     
-    :param: shadowDocument the ShadowDocument patched with updates from the server
-    :param: document the ClientDocument.
-    :returns: Edit the edit representing the diff between the shadow document and the client document.
+    - parameter shadowDocument: the ShadowDocument patched with updates from the server
+    - parameter document: the ClientDocument.
+    - returns: Edit the edit representing the diff between the shadow document and the client document.
     */
     public func clientDiff(clientDocument: ClientDocument<String>, shadow: ShadowDocument<String>) -> DiffMatchPatchEdit {
         let diffs = dmp.diff_mainOfOldString(clientDocument.content, andNewString: shadow.clientDocument.content).copy() as! [Diff]
@@ -47,9 +47,9 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     /**
     Called when the document should be patched.
     
-    :param: edit the Edit containing the diffs/patches.
-    :param: document the ClientDocument to be patched.
-    :returns: ClientDocument a new patched document.
+    - parameter edit: the Edit containing the diffs/patches.
+    - parameter document: the ClientDocument to be patched.
+    - returns: ClientDocument a new patched document.
     */
     public func patchDocument(edit: DiffMatchPatchEdit, clientDocument: ClientDocument<String>) -> ClientDocument<String> {
         let results = dmp.patch_apply(patchesFrom(edit) as [AnyObject], toString: clientDocument.content)
@@ -59,9 +59,9 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     /**
     Called when the shadow should be patched. Is called when an update is recieved.
     
-    :param: edit the Edit containing the diffs/patches.
-    :param: shadowDocument the ShadowDocument to be patched.
-    :returns: ShadowDocument a new patched shadow document.
+    - parameter edit: the Edit containing the diffs/patches.
+    - parameter shadowDocument: the ShadowDocument to be patched.
+    - returns: ShadowDocument a new patched shadow document.
     */
     public func patchShadow(edit: DiffMatchPatchEdit, shadow: ShadowDocument<String>) -> ShadowDocument<String> {
         return ShadowDocument(clientVersion: edit.clientVersion, serverVersion: shadow.serverVersion, clientDocument: patchDocument(edit, clientDocument: shadow.clientDocument))
@@ -75,9 +75,9 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     gather the changes between the updates made by the client and the shadow document.
     The produced Edit can then be passed to the server side.
     
-    :param: document the ClientDocument containing updates made by the client.
-    :param: shadowDocument the ShadowDocument for the ClientDocument.
-    :returns: Edit the edit representing the diff between the client document and it's shadow document.
+    - parameter document: the ClientDocument containing updates made by the client.
+    - parameter shadowDocument: the ShadowDocument for the ClientDocument.
+    - returns: Edit the edit representing the diff between the client document and it's shadow document.
     */
     public func serverDiff(serverDocument: ClientDocument<String>, shadow: ShadowDocument<String>) -> DiffMatchPatchEdit {
         let diffs = dmp.diff_mainOfOldString(shadow.clientDocument.content, andNewString: serverDocument.content).copy() as! [Diff]
@@ -131,8 +131,8 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     /**
     Creates a PatchMessage by parsing the passed-in json.
     
-    :param: json the json representation of a PatchMessage.
-    :returns: PatchMessage the created PatchMessage.
+    - parameter json: the json representation of a PatchMessage.
+    - returns: PatchMessage the created PatchMessage.
     */
     public func patchMessageFromJson(json: String) -> DiffMatchPatchMessage? {
         return DiffMatchPatchMessage().fromJson(json)
@@ -142,10 +142,10 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     Creates a new PatchMessage with the with the type of Edit that this
     synchronizer can handle.
     
-    :param: documentId the document identifier for the PatchMessage.
-    :param: clientId the client identifier for the PatchMessage.
-    :param: edits the Edits for the PatchMessage.
-    :returns: PatchMessage the created PatchMessage.
+    - parameter documentId: the document identifier for the PatchMessage.
+    - parameter clientId: the client identifier for the PatchMessage.
+    - parameter edits: the Edits for the PatchMessage.
+    - returns: PatchMessage the created PatchMessage.
     */
 
     public func createPatchMessage(id: String, clientId: String, edits: [DiffMatchPatchEdit]) -> DiffMatchPatchMessage? {
@@ -164,9 +164,9 @@ public class DiffMatchPatchSynchronizer: ClientSynchronizer {
     For example, a ClientEngine that stores simple text will just add the contents as a String,
     but one that stores JsonNode object will want to add its content as an object.
     
-    :param: content the content to be added.
-    :param: objectNode as a string to add the content to.
-    :param: fieldName the name of the field.
+    - parameter content: the content to be added.
+    - parameter objectNode: as a string to add the content to.
+    - parameter fieldName: the name of the field.
     */
     public func addContent(clientDocument:ClientDocument<String>, fieldName:String, inout objectNode:String) {
         objectNode += "\"content\":\(clientDocument.content)"

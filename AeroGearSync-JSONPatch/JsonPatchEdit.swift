@@ -58,12 +58,12 @@ public struct JsonPatchEdit: Edit {
     /**
     Default init.
     
-    :param: clientId represents an id of the client session.
-    :param: documentId represents an id of the edit.
-    :param: clientVersion represents the version of the client edit.
-    :param: serverVersion represents an id of the server edit.
-    :param: checksum
-    :param: diff list of differences.
+    - parameter clientId: represents an id of the client session.
+    - parameter documentId: represents an id of the edit.
+    - parameter clientVersion: represents the version of the client edit.
+    - parameter serverVersion: represents an id of the server edit.
+    - parameter checksum:
+    - parameter diff: list of differences.
     */
     public init(clientId: String, documentId: String, clientVersion: Int, serverVersion: Int, checksum: String, diffs: [JsonPatchDiff]) {
         self.clientId = clientId

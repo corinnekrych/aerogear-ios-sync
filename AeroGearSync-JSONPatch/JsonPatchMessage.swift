@@ -26,7 +26,7 @@ Edits that represent updates to be performed on the opposing sides document.
 <br/><br/>
 JsonPatchMessage works with JsonPatch Synchronizer.
 */
-public struct JsonPatchMessage: PatchMessage, Printable {
+public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     
     /**
     Identifies the document that this edit is related to.
@@ -59,9 +59,9 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     /**
     Default init.
     
-    :param: pathMessageId unique id.
-    :param: client id to identify the client sesion.
-    :param: list of edits that makes the content of the patch.
+    - parameter pathMessageId: unique id.
+    - parameter client: id to identify the client sesion.
+    - parameter list: of edits that makes the content of the patch.
     */
     public init(id: String, clientId: String, edits: [JsonPatchEdit]) {
         self.documentId = id
@@ -71,7 +71,7 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     
     /**
     Transforms this payload to a JSON String representation.
-    :returns: s string representation of JSON object.
+    - returns: s string representation of JSON object.
     */
     public func asJson() -> String {
         var dict = [String: AnyObject]()
@@ -105,10 +105,10 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     /**
     Transforms the passed in string JSON representation into this payloads type.
     
-    :param: json a string representation of this payloads type.
-    :returns: JsonPatchMessage an instance of this payloads type.
+    - parameter json: a string representation of this payloads type.
+    - returns: JsonPatchMessage an instance of this payloads type.
     */
-    public func fromJson(var json:String) -> JsonPatchMessage? {
+    public func fromJson(json:String) -> JsonPatchMessage? {
         if let dict = asDictionary(json) {
             let id = dict["id"] as! String
             let clientId = dict["clientId"] as! String
@@ -140,24 +140,27 @@ public struct JsonPatchMessage: PatchMessage, Printable {
     /**
     Tries to convert the passed in String into a Swift Dictionary<String, AnyObject>
     
-    :param: jsonString the JSON string to convert into a Dictionary
-    :returns: Optional Dictionary<String, AnyObject>
+    - parameter jsonString: the JSON string to convert into a Dictionary
+    - returns: Optional Dictionary<String, AnyObject>
     */
     public func asDictionary(jsonString: String) -> [String: AnyObject]? {
-        var jsonErrorOptional: NSError?
-        return NSJSONSerialization.JSONObjectWithData((jsonString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!,
-            options: NSJSONReadingOptions(0), error: &jsonErrorOptional) as? [String: AnyObject]
+        return try! NSJSONSerialization.JSONObjectWithData((jsonString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!,
+            options: NSJSONReadingOptions(rawValue: 0)) as? [String: AnyObject]
     }
     
     /**
     Tries to convert the passed in Dictionary<String, AnyObject> into a JSON String representation.
     
-    :param: the Dictionary<String, AnyObject> to try to convert.
-    :returns: optionally the JSON string representation for the dictionary.
+    - parameter the: Dictionary<String, AnyObject> to try to convert.
+    - returns: optionally the JSON string representation for the dictionary.
     */
     public func asJsonString(dict: [String:  AnyObject]) -> String? {
-        var jsonErrorOptional: NSError?
-        var data = NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions(0), error: &jsonErrorOptional)
+        var data: NSData?
+        do {
+            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions(rawValue: 0))
+        } catch {
+            data = nil
+        }
         return NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
     }
 }

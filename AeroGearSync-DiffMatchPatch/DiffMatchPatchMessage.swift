@@ -25,7 +25,7 @@ A DiffMatchPatchMessage is what is passed between the client and the server. It 
 <br/><br/>
 DiffMatchPatchMessage works with JsonPatch Synchronizer.
 */
-public struct DiffMatchPatchMessage:PatchMessage, Printable {
+public struct DiffMatchPatchMessage:PatchMessage, CustomStringConvertible {
     
     /**
     Identifies the document that this edit is related to.
@@ -61,9 +61,9 @@ public struct DiffMatchPatchMessage:PatchMessage, Printable {
     /**
     Default init.
     
-    :param: id represents an id of PatchMessage.
-    :param: clientId represents an id of the client session.
-    :param: diff list of differences.
+    - parameter id: represents an id of PatchMessage.
+    - parameter clientId: represents an id of the client session.
+    - parameter diff: list of differences.
     */
     public init(id: String, clientId: String, edits: [DiffMatchPatchEdit]) {
         self.documentId = id
@@ -74,7 +74,7 @@ public struct DiffMatchPatchMessage:PatchMessage, Printable {
     /**
     Transforms this payload to a JSON String representation.
     
-    :returns: a string representation of JSON object.
+    - returns: a string representation of JSON object.
     */
     public func asJson() -> String {
         var dict = [String: AnyObject]()
@@ -105,10 +105,10 @@ public struct DiffMatchPatchMessage:PatchMessage, Printable {
     /**
     Transforms the passed in string JSON representation into this payloads type.
     
-    :param: json a string representation of this payloads type.
-    :returns: DiffMatchPatchMessage an instance of this payloads type.
+    - parameter json: a string representation of this payloads type.
+    - returns: DiffMatchPatchMessage an instance of this payloads type.
     */
-    public func fromJson(var json: String) -> DiffMatchPatchMessage? {
+    public func fromJson(json: String) -> DiffMatchPatchMessage? {
         if let dict = asDictionary(json) {
             let id = dict["id"] as! String
             let clientId = dict["clientId"] as! String
@@ -140,24 +140,33 @@ public struct DiffMatchPatchMessage:PatchMessage, Printable {
     /**
     Tries to convert the passed in String into a Swift Dictionary<String, AnyObject>
     
-    :param: jsonString the JSON string to convert into a Dictionary
-    :returns: Optional Dictionary<String, AnyObject>
+    - parameter jsonString: the JSON string to convert into a Dictionary
+    - returns: Optional Dictionary<String, AnyObject>
     */
     public func asDictionary(jsonString: String) -> [String: AnyObject]? {
-        var jsonErrorOptional: NSError?
-        return NSJSONSerialization.JSONObjectWithData((jsonString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!,
-            options: NSJSONReadingOptions(0), error: &jsonErrorOptional) as? [String: AnyObject]
+        var result: [String: AnyObject]?
+        do {
+            result = try NSJSONSerialization.JSONObjectWithData((jsonString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!,
+                options: NSJSONReadingOptions(rawValue: 0)) as? [String: AnyObject]
+        } catch {
+            result = nil
+        }
+        return result
     }
     
     /**
     Tries to convert the passed in Dictionary<String, AnyObject> into a JSON String representation.
     
-    :param: the Dictionary<String, AnyObject> to try to convert.
-    :returns: optionally the JSON string representation for the dictionary.
+    - parameter the: Dictionary<String, AnyObject> to try to convert.
+    - returns: optionally the JSON string representation for the dictionary.
     */
     public func asJsonString(dict: [String: AnyObject]) -> String? {
-        var jsonErrorOptional: NSError?
-        var data = NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions(0), error: &jsonErrorOptional)
+        var data: NSData?
+        do {
+            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions(rawValue: 0))
+        } catch {
+            data = nil
+        }
         return NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
     }
 }

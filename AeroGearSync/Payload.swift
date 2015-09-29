@@ -28,15 +28,15 @@ public protocol Payload {
     
     /**
     Transforms this payload to a JSON String representation.
-    :returns: s string representation of JSON object.
+    - returns: s string representation of JSON object.
     */
     func asJson() -> String
     
     /**
     Transforms the passed in string JSON representation into this payloads type.
     
-    :param: json a string representation of this payloads type.
-    :returns: T an instance of this payloads type.
+    - parameter json: a string representation of this payloads type.
+    - returns: T an instance of this payloads type.
     */
     func fromJson(var json:String) -> T?
 }

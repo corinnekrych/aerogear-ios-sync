@@ -20,7 +20,7 @@ import Foundation
 /**
 Represents a single edit. The typealias D refer to the type of the Diff comaptible with the Edit.
 */
-public protocol Edit: Equatable, Printable {
+public protocol Edit: Equatable, CustomStringConvertible {
 
     typealias D
     
