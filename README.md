@@ -30,7 +30,7 @@ pod install
 To add the library in your project, you can either use [Cocoapods](http://cocoapods.org) or manual install in your project. See the respective sections below for instructions:
 
 ### Using [Cocoapods](http://cocoapods.org)
-Support for Swift frameworks is supported from [CocoaPods-0.36+ release](http://cocoapods.org) upwards. In your ```Podfile``` add:
+Support for Swift frameworks is supported from [CocoaPods](http://cocoapods.org) upwards. In your ```Podfile``` add:
 
 ```
 source 'https://github.com/CocoaPods/Specs.git'
