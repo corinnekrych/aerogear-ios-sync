@@ -17,7 +17,6 @@
 
 import UIKit
 import XCTest
-import AeroGearSync
 import AeroGearSyncJSONPatch
 
 class JsonPatchMessageTests: XCTestCase {

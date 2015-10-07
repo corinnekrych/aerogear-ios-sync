@@ -16,7 +16,6 @@
 */
 
 import Foundation
-import AeroGearSync
 
 /**
 Represents a stack of changes made on the server of client side.
