@@ -15,8 +15,6 @@
 * limitations under the License.
 */
 
-import AeroGearSync
-
 /**
 Implements the marker interface that represents a diff or two versions of a document/object.
 */

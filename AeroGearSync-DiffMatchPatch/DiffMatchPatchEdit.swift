@@ -15,7 +15,6 @@
 * limitations under the License.
 */
 
-import AeroGearSync
 
 /**
 Represents a single edit that goes with DiffMatchPatch Synchronizer.

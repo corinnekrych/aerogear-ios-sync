@@ -15,7 +15,6 @@
 * limitations under the License.
 */
 
-import AeroGearSync
 /**
 A struct that represents a diff or two versions of a document/object.
 */
