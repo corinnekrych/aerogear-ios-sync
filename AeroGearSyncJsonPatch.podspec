@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AeroGearSyncJsonPatch"
-  s.version      = "1.0.0-alpha.3"
+  s.version      = "1.0.0-alpha.4"
   s.summary      = "An iOS Sync Engine for AeroGear Differential Synchronization"
   s.description  = <<-DESC
   AeroGearSync is the synchronisation engine based on Google Diff Match Patch algorithm. 
@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
   s.platform     = :ios, 8.0
   s.source_files = 'AeroGearSync/*.{swift}', 'AeroGearSync-JSONPatch/*.{swift}'
   s.requires_arc = true
-  s.dependency  'JSONTools', '1.0.5'
+  s.dependency  'JSONTools'
 end

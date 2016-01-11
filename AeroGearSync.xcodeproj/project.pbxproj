@@ -64,9 +64,9 @@
 		6F7144961A8E051000A550F3 /* DiffMatchPatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7144951A8E051000A550F3 /* DiffMatchPatchMessage.swift */; };
 		6F7752F21A8D3722008B9289 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7752F11A8D3722008B9289 /* Payload.swift */; };
 		6F7752F51A8D525B008B9289 /* JsonPatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7752F41A8D525B008B9289 /* JsonPatchMessage.swift */; };
-		A7998CBCB58C04C9404F1587 /* Pods_AeroGearSync_JSONPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E8690B135EB75D4789247F /* Pods_AeroGearSync_JSONPatch.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		A915F58D3667C2AD005B802C /* Pods_AeroGearSync_DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B71895D7113665A266C828CB /* Pods_AeroGearSync_DiffMatchPatch.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		C18264FCE94980E9F0D35F88 /* Pods_AeroGearSync_JSONPatchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A24E97EB2FB7B76BFB999D3 /* Pods_AeroGearSync_JSONPatchTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A7998CBCB58C04C9404F1587 /* Pods_AeroGearSync_JSONPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E8690B135EB75D4789247F /* Pods_AeroGearSync_JSONPatch.framework */; };
+		A915F58D3667C2AD005B802C /* Pods_AeroGearSync_DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B71895D7113665A266C828CB /* Pods_AeroGearSync_DiffMatchPatch.framework */; };
+		C18264FCE94980E9F0D35F88 /* Pods_AeroGearSync_JSONPatchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A24E97EB2FB7B76BFB999D3 /* Pods_AeroGearSync_JSONPatchTests.framework */; };
 		C5307E1D19C1B8660009EBB2 /* PatchMesssage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5307E1C19C1B8660009EBB2 /* PatchMesssage.swift */; };
 		C589846C19C046A50049EB34 /* BackupShadowDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = C589846019C046A50049EB34 /* BackupShadowDocument.swift */; };
 		C589846D19C046A50049EB34 /* ClientDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = C589846119C046A50049EB34 /* ClientDocument.swift */; };
@@ -518,7 +518,6 @@
 				6F4F45201A84AEC400970512 /* Headers */,
 				6F4F45211A84AEC400970512 /* Resources */,
 				9897A55A79EDD7E90BC92598 /* Copy Pods Resources */,
-				6815313A38D549B8F064DBDE /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -561,7 +560,6 @@
 				6F4F45421A84AF4200970512 /* Headers */,
 				6F4F45431A84AF4200970512 /* Resources */,
 				CBF012DD59C6222052BAB29C /* Copy Pods Resources */,
-				AA18A5B8E64620CFB1A0E087 /* Embed Pods Frameworks */,
 				485F110E1BB9932200460C32 /* CopyFiles */,
 			);
 			buildRules = (
@@ -767,21 +765,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6815313A38D549B8F064DBDE /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AeroGearSync-DiffMatchPatch/Pods-AeroGearSync-DiffMatchPatch-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9897A55A79EDD7E90BC92598 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -795,21 +778,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AeroGearSync-DiffMatchPatch/Pods-AeroGearSync-DiffMatchPatch-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AA18A5B8E64620CFB1A0E087 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AeroGearSync-JSONPatch/Pods-AeroGearSync-JSONPatch-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AE332230B6D3FB6DCF490A6F /* Check Pods Manifest.lock */ = {

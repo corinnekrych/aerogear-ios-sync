@@ -5,11 +5,11 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'AeroGearSync-JSONPatch' do
-    pod 'JSONTools', '1.0.5'
+    pod 'JSONTools', :git => 'https://github.com/corinnekrych/JSONTools', :branch => 'podspec.public.header'
 end
 
 target 'AeroGearSync-JSONPatchTests' do
-    pod 'JSONTools', '1.0.5'
+    pod 'JSONTools', :git => 'https://github.com/corinnekrych/JSONTools', :branch => 'podspec.public.header'
 end
 
 target 'AeroGearSync-DiffMatchPatch' do
