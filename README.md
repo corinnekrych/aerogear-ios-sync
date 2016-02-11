@@ -27,9 +27,9 @@ pod install
 3. open AeroGearSync.xcworkspace
 
 ## Adding the library to your project 
-To add the library in your project, you can either use [Cocoapods](http://cocoapods.org) or manual install in your project. See the respective sections below for instructions:
+To add the library in your project, you can either use [CocoaPods](http://cocoapods.org) or manual install in your project. See the respective sections below for instructions:
 
-### Using [Cocoapods](http://cocoapods.org)
+### Using [CocoaPods](http://cocoapods.org)
 Support for Swift frameworks is supported from [CocoaPods](http://cocoapods.org) upwards. In your ```Podfile``` add:
 
 ```
