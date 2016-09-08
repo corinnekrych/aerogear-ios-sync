@@ -16,7 +16,7 @@
 */
 
 import XCTest
-import AeroGearSyncDiffMatchPatch
+import AeroGearSyncJsonPatch
 
 class DocUtil {
     

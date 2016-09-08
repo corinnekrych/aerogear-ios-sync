@@ -29,17 +29,18 @@ pod install
 ## Adding the library to your project 
 To add the library in your project, you can either use [CocoaPods](http://cocoapods.org) or manual install in your project. See the respective sections below for instructions:
 
-### Using [CocoaPods](http://cocoapods.org)
 Support for Swift frameworks is supported from [CocoaPods](http://cocoapods.org) upwards. In your ```Podfile``` add:
 
 ```
 source 'https://github.com/CocoaPods/Specs.git'
 
-xcodeproj 'YourProjectName.xcodeproj'
+project 'YourProjectName.xcodeproj'
 platform :ios, '8.0'
 use_frameworks!
+target 'YourProjectName' do
+    pod 'AeroGearSync'
+end
 
-pod 'AeroGearSync'
 ```
 
 and then:
@@ -49,18 +50,6 @@ pod install
 ```
 
 to install your dependencies.
-
-### Manual Installation
-Follow these steps to add the library in your Swift project:
-
-1. Add AeroGearSync as a [submodule](http://git-scm.com/docs/git-submodule) in your project. Open a terminal and navigate to your project directory. Then enter:
-```bash
-git submodule add https://github.com/aerogear/aerogear-ios-sync.git
-```
-2. Open the `aerogear-ios-sync` folder, and drag the `AeroGearSync.xcodeproj` into the file navigator in Xcode.
-3. In Xcode select your application target  and under the "Targets" heading section, ensure that the 'iOS  Deployment Target'  matches the application target of AeroGearSync.framework (Currently set to 8.0).
-5. Select the  "Build Phases"  heading section,  expand the "Target Dependencies" group and add  `AeroGearSync.framework`.
-7. Click on the `+` button at the top left of the panel and select "New Copy Files Phase". Rename this new phase to "Copy Frameworks", set the "Destination" to "Frameworks", and add `AeroGearSync.framework`.
 
 ## Documentation
 
