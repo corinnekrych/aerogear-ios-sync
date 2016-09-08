@@ -32,7 +32,6 @@
 		48784CA41D803837001382FF /* JsonPatchSynchronizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48784CA11D803837001382FF /* JsonPatchSynchronizerTests.swift */; };
 		48784CA81D803AC3001382FF /* KiteJSONValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48784CA71D803AC3001382FF /* KiteJSONValidator.framework */; };
 		48784CAA1D803ADE001382FF /* JSONTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48784CA91D803ADE001382FF /* JSONTools.framework */; };
-		EB248983D83FA0F297C438CC /* Pods_AeroGearSyncJsonPatchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C867709A992484FB09BEDAD3 /* Pods_AeroGearSyncJsonPatchTests.framework */; };
 		EF1F281FB9930E23AEB09C85 /* Pods_AeroGearSyncJsonPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6CB1A90F2EAD296810871D8 /* Pods_AeroGearSyncJsonPatch.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,7 +101,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48784C6B1D803670001382FF /* AeroGearSyncJsonPatch.framework in Frameworks */,
-				EB248983D83FA0F297C438CC /* Pods_AeroGearSyncJsonPatchTests.framework in Frameworks */,
 				1952EF7C9C269AE1876C6E18 /* Pods_AeroGearSyncJsonPatch_AeroGearSyncJsonPatchTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
