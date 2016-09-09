@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.author       = "Red Hat, Inc."
   s.source       = { :git => 'https://github.com/aerogear/aerogear-ios-sync.git', :tag => s.version }
   s.platform     = :ios, 8.0
-  s.source_files = 'AeroGearSync/*.{swift}', 'AeroGearSync-JSONPatch/*.{swift}'
+  s.source_files = 'AeroGearSyncJsonPatch/*.{swift}'
   s.requires_arc = true
   s.dependency  'JSONTools', '1.0.5'
 end
