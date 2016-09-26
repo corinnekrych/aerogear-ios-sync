@@ -22,7 +22,7 @@ Represents a single edit. The typealias D refer to the type of the Diff comaptib
 */
 public protocol Edit: Equatable, CustomStringConvertible {
 
-    typealias D
+    associatedtype D
     
     /**
     The clientId to identifie which client it is related to.
