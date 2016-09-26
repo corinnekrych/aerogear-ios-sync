@@ -27,8 +27,8 @@ Differential Synchronization implementation.
 */
 public protocol DataStore {
     
-    typealias T
-    typealias D
+    associatedtype T
+    associatedtype D
 
     /**
     Saves a client document.

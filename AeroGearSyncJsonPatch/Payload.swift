@@ -24,7 +24,7 @@ Represents something that can be exchanged in JSON format.
 */
 public protocol Payload {
     
-    typealias T
+    associatedtype T
     
     /**
     Transforms this payload to a JSON String representation.
@@ -38,5 +38,5 @@ public protocol Payload {
     - parameter json: a string representation of this payloads type.
     - returns: T an instance of this payloads type.
     */
-    func fromJson(var json:String) -> T?
+    func fromJson(json:String) -> T?
 }

@@ -29,9 +29,9 @@ Differential Synchronization for a specific type of documents.
 */
 public protocol ClientSynchronizer {
     
-    typealias T
-    typealias D: Edit
-    typealias P: PatchMessage
+    associatedtype T
+    associatedtype D: Edit
+    associatedtype P: PatchMessage
     
     /**
     Called when the shadow should be patched. Is called when an update is recieved.
