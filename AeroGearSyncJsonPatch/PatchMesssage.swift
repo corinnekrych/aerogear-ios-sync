@@ -27,7 +27,7 @@ Edits that represent updates to be performed on the opposing sides document.
 */
 public protocol PatchMessage: CustomStringConvertible, Payload {
     
-    typealias E: Edit
+    associatedtype E: Edit
     
     /**
     Identifies the document that this edit is related to.
