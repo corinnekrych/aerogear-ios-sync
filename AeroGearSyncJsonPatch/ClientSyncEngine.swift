@@ -218,6 +218,16 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
     open func patchMessageFromJson(json: String) -> P? {
         return synchronizer.patchMessageFromJson(json: json)
     }
-    
+    /**
+    Delegate to Synchronizer.addContent.
+    - parameter clientDocument: the content itself.
+    - returns: String with all ClientDocument information.
+    */
+    public func documentToJson(clientDocument:ClientDocument<T>) -> String {
+        var str = "{\"msgType\":\"add\",\"id\":\"" + clientDocument.id + "\",\"clientId\":\"" + clientDocument.clientId + "\","
+        synchronizer.add(content: clientDocument, fieldName: "content", objectNode: &str)
+        str += "}"
+        return str
+    }
 }
 

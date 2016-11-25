@@ -112,9 +112,9 @@ class JsonPatchSynchronizerTests: XCTestCase {
     }
     
     func testPatchShadow() {
-        let cientDoc: JsonNode = ["name": "fletch" as AnyObject]
+        let clientDoc: JsonNode = ["name": "fletch" as AnyObject]
         let sourceDoc: JsonNode = ["name": "Fletch" as AnyObject, "firstname": "Robert" as AnyObject]
-        let client = util.document(cientDoc)
+        let client = util.document(clientDoc)
         let source = util.shadow(sourceDoc)
         let edit = clientSynchronizer.serverDiff(serverDocument: client, shadow: source)
         
@@ -162,7 +162,6 @@ class JsonPatchSynchronizerTests: XCTestCase {
         XCTAssertEqual(friend["firstname"] as? String, "Sebastien")
         XCTAssertEqual(friend["name"] as? String, "Blanc")
     }
-    
 }
 
 

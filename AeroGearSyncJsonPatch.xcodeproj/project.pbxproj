@@ -31,6 +31,7 @@
 		48784CA41D803837001382FF /* JsonPatchSynchronizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48784CA11D803837001382FF /* JsonPatchSynchronizerTests.swift */; };
 		48784CA81D803AC3001382FF /* KiteJSONValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48784CA71D803AC3001382FF /* KiteJSONValidator.framework */; };
 		48784CAA1D803ADE001382FF /* JSONTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48784CA91D803ADE001382FF /* JSONTools.framework */; };
+		48DC82CA1DE8A8B70069C89F /* ClientSyncEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DC82C91DE8A8B70069C89F /* ClientSyncEngineTests.swift */; };
 		EF1F281FB9930E23AEB09C85 /* Pods_AeroGearSyncJsonPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6CB1A90F2EAD296810871D8 /* Pods_AeroGearSyncJsonPatch.framework */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		48784CA51D8038F6001382FF /* JSONTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSONTools.framework; path = "Pods/../build/Debug-iphoneos/JSONTools/JSONTools.framework"; sourceTree = "<group>"; };
 		48784CA71D803AC3001382FF /* KiteJSONValidator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KiteJSONValidator.framework; path = "../../../Library/Developer/Xcode/DerivedData/AeroGearSyncJsonPatch-dkyfrjqdkkychfegjhrozyewlzbu/Build/Products/Debug-iphoneos/KiteJSONValidator/KiteJSONValidator.framework"; sourceTree = "<group>"; };
 		48784CA91D803ADE001382FF /* JSONTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSONTools.framework; path = "../../../Library/Developer/Xcode/DerivedData/AeroGearSyncJsonPatch-dkyfrjqdkkychfegjhrozyewlzbu/Build/Products/Debug-iphoneos/JSONTools/JSONTools.framework"; sourceTree = "<group>"; };
+		48DC82C91DE8A8B70069C89F /* ClientSyncEngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSyncEngineTests.swift; sourceTree = "<group>"; };
 		48E4C401D09FE2DF939F0186 /* Pods-AeroGearSyncJsonPatch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AeroGearSyncJsonPatch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AeroGearSyncJsonPatch/Pods-AeroGearSyncJsonPatch.debug.xcconfig"; sourceTree = "<group>"; };
 		7B317183A15DEBBC4CE16E8A /* Pods_AeroGearSyncJsonPatch_AeroGearSyncJsonPatchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AeroGearSyncJsonPatch_AeroGearSyncJsonPatchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CB1A90F2EAD296810871D8 /* Pods_AeroGearSyncJsonPatch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AeroGearSyncJsonPatch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +173,7 @@
 				48784C9F1D803837001382FF /* DocUtil.swift */,
 				48784CA01D803837001382FF /* JsonPatchMessageTests.swift */,
 				48784CA11D803837001382FF /* JsonPatchSynchronizerTests.swift */,
+				48DC82C91DE8A8B70069C89F /* ClientSyncEngineTests.swift */,
 				48784C711D803670001382FF /* Info.plist */,
 				48784C9E1D803836001382FF /* AeroGearSyncJsonPatchTests-Bridging-Header.h */,
 			);
@@ -409,6 +412,7 @@
 				48784CA31D803837001382FF /* JsonPatchMessageTests.swift in Sources */,
 				48784CA41D803837001382FF /* JsonPatchSynchronizerTests.swift in Sources */,
 				48784CA21D803837001382FF /* DocUtil.swift in Sources */,
+				48DC82CA1DE8A8B70069C89F /* ClientSyncEngineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
