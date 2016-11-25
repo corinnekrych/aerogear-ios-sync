@@ -30,20 +30,23 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     /**
     Identifies the document that this edit is related to.
     */
-    public let documentId: String!
+    public let documentId: String?
     
     /**
     Identifies the client that this edit instance belongs to.
     */
-    public let clientId: String!
+    public let clientId: String?
     
     /**
     The list Edits.
     */
-    public let edits: [JsonPatchEdit]!
+    public let edits: [JsonPatchEdit]?
     
     public var description: String {
-        return "JsonPatchMessage[documentId=\(documentId), clientId=\(clientId), edits=\(edits)]"
+        if let edits = edits {
+            return "JsonPatchMessage[documentId=\(documentId ?? ""), clientId=\(clientId ?? ""), edits=\(edits))]"
+        }
+        return "JsonPatchMessage[documentId=\(documentId ?? ""), clientId=\(clientId ?? ""), edits=\(edits))]"
     }
     
     /**
@@ -73,29 +76,31 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - returns: s string representation of JSON object.
     */
     public func asJson() -> String {
-        var dict = [String: AnyObject]()
+        var dict = [String: Any]()
         
         dict["msgType"] = "patch"
         dict["id"] = documentId
         dict["clientId"] = clientId
-        dict["edits"] = self.edits.map { (edit:JsonPatchEdit) -> [String: AnyObject] in
-            var dict = [String: AnyObject]()
-            
-            dict["clientVersion"] = edit.clientVersion
-            dict["serverVersion"] = edit.serverVersion
-            dict["checksum"] = edit.checksum
-            
-            dict["diffs"] = edit.diffs.map { (diff:JsonPatchDiff) -> [String: AnyObject] in
-                var dict = [String: AnyObject]()
+        if let edits = edits {
+            dict["edits"] = edits.map { (edit:JsonPatchEdit) -> [String: Any] in
+                var dict = [String: Any]()
                 
-                dict["op"] = diff.operation.rawValue
-                dict["path"] = diff.path
-                if let val = diff.value as? String {
-                    dict["value"] = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                dict["clientVersion"] = edit.clientVersion
+                dict["serverVersion"] = edit.serverVersion
+                dict["checksum"] = edit.checksum
+                
+                dict["diffs"] = edit.diffs.map { (diff:JsonPatchDiff) -> [String: Any] in
+                    var dict = [String: Any]()
+                    
+                    dict["op"] = diff.operation.rawValue
+                    dict["path"] = diff.path
+                    if let val = diff.value as? String {
+                        dict["value"] = val.replacingOccurrences(of: "\"", with: "\\\"", options: NSString.CompareOptions.literal, range: nil)
+                    }
+                    return dict
                 }
                 return dict
             }
-            return dict
         }
         
         return asJsonString(dict)!
@@ -107,7 +112,7 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - parameter json: a string representation of this payloads type.
     - returns: JsonPatchMessage an instance of this payloads type.
     */
-    public func fromJson(json:String) -> JsonPatchMessage? {
+    public func fromJson(_ json:String) -> JsonPatchMessage? {
         if let dict = asDictionary(json) {
             let id = dict["id"] as! String
             let clientId = dict["clientId"] as! String
@@ -119,7 +124,7 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
                     if let d = edit["diffs"] as? [[String: AnyObject]] {
                         for diff in d {
                             diffs.append(JsonPatchDiff(operation: JsonPatchDiff.Operation(rawValue: diff["op"] as! String)!,
-                                path: diff["path"] as! String, value: diff["value"] as? String))
+                                path: diff["path"] as! String, value: diff["value"] as? String as AnyObject?))
                         }
                     }
                     
@@ -133,7 +138,7 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
             }
             return JsonPatchMessage(id: id, clientId: clientId, edits: edits)
         }
-        return Optional.None
+        return Optional.none
     }
     
     /**
@@ -142,9 +147,9 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - parameter jsonString: the JSON string to convert into a Dictionary
     - returns: Optional Dictionary<String, AnyObject>
     */
-    public func asDictionary(jsonString: String) -> [String: AnyObject]? {
-        return try! NSJSONSerialization.JSONObjectWithData((jsonString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!,
-            options: NSJSONReadingOptions(rawValue: 0)) as? [String: AnyObject]
+    public func asDictionary(_ jsonString: String) -> [String: AnyObject]? {
+        return try! JSONSerialization.jsonObject(with: (jsonString as NSString).data(using: String.Encoding.utf8.rawValue)!,
+            options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: AnyObject]
     }
     
     /**
@@ -153,13 +158,13 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - parameter the: Dictionary<String, AnyObject> to try to convert.
     - returns: optionally the JSON string representation for the dictionary.
     */
-    public func asJsonString(dict: [String:  AnyObject]) -> String? {
-        var data: NSData?
+    public func asJsonString(_ dict: [String:  Any]) -> String? {
+        var data: Data?
         do {
-            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions(rawValue: 0))
+            data = try JSONSerialization.data(withJSONObject: dict, options:JSONSerialization.WritingOptions(rawValue: 0))
         } catch {
             data = nil
         }
-        return NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
+        return NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
     }
 }

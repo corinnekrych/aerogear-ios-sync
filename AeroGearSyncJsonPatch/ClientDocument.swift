@@ -23,12 +23,12 @@ associates a client identifier with a Document.
 <br/><br/>
 ```<T>``` the type of this documents content.
 */
-public class ClientDocument<T>: Document<T> {
+open class ClientDocument<T>: Document<T> {
     
     /**
     Identifies a client or session to which this Document belongs.
     */
-    public let clientId: String
+    open let clientId: String
     
     /**
     Default init.
@@ -45,7 +45,7 @@ public class ClientDocument<T>: Document<T> {
     /**
     Printable protocol implementation, provides a string representation of the object.
     */
-    public override var description: String {
+    open override var description: String {
         return "ClientDocument[clientId=\(clientId), documentId=\(super.id), content=\(super.content)]"
     }
     

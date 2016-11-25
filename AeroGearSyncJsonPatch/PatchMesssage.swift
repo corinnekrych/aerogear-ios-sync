@@ -32,17 +32,17 @@ public protocol PatchMessage: CustomStringConvertible, Payload {
     /**
     Identifies the document that this edit is related to.
     */
-    var documentId: String! {get}
+    var documentId: String? {get}
     
     /**
     Identifies the client that this edit instance belongs to.
     */
-    var clientId: String! {get}
+    var clientId: String? {get}
     
     /**
     The list Edits.
     */
-    var edits: [E]! {get}
+    var edits: [E]? {get}
     
     /**
     Default init.

@@ -22,17 +22,17 @@ A backup of the ShadowDocument.
 <br/><br/>
 ```<T>``` the type of the Document that this instance backups.
 */
-public class BackupShadowDocument<T>: CustomStringConvertible {
+open class BackupShadowDocument<T>: CustomStringConvertible {
     
     /**
     Represents the version of this backup shadow.
     */
-    public let version: Int
+    open let version: Int
     
     /**
     The ShadowDocument that this instance is backing up.
     */
-    public let shadowDocument: ShadowDocument<T>
+    open let shadowDocument: ShadowDocument<T>
     
     /**
     Default init.
@@ -48,7 +48,7 @@ public class BackupShadowDocument<T>: CustomStringConvertible {
     /**
     Printable protocol implementation, provides a string representation of the object.
     */
-    public var description: String {
+    open var description: String {
         return "BackupShadowDocument[version=\(version), shadowDocument=\(shadowDocument)]"
     }
 }

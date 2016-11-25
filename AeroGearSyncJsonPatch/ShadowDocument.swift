@@ -24,21 +24,21 @@ A shadow document is updated after a successful patch has been performed.
 <br/><br/>
 ```<T>``` the type of the Document that this instance shadows.
 */
-public class ShadowDocument<T>: CustomStringConvertible {
+open class ShadowDocument<T>: CustomStringConvertible {
     /**
     Represents the latest client version that this shadow document was based on.
     */
-    public let clientVersion: Int
+    open let clientVersion: Int
     
     /**
     Represents the latest server version that the this shadow document was based on.
     */
-    public let serverVersion: Int
+    open let serverVersion: Int
     
     /**
     The document itself.
     */
-    public let clientDocument: ClientDocument<T>
+    open let clientDocument: ClientDocument<T>
     
     /**
     Default init.
@@ -56,7 +56,7 @@ public class ShadowDocument<T>: CustomStringConvertible {
     /**
     Printable protocol implementation, provides a string representation of the object.
     */
-    public var description: String {
+    open var description: String {
         return "ShadowDocument[clientVersion=\(clientVersion), serverVersion=\(serverVersion), clientDocument=\(clientDocument)]"
     }
 }

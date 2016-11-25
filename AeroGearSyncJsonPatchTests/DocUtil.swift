@@ -38,11 +38,11 @@ class DocUtil {
         return ClientDocument(id: documentId, clientId: clientId, content: content)
     }
     
-    func document<T>(content: T) -> ClientDocument<T> {
+    func document<T>(_ content: T) -> ClientDocument<T> {
         return ClientDocument(id: documentId, clientId: clientId, content: content)
     }
     
-    func shadow<T>(content: T) -> ShadowDocument<T> {
+    func shadow<T>(_ content: T) -> ShadowDocument<T> {
         return ShadowDocument(clientVersion: 0, serverVersion: 0, clientDocument: ClientDocument(id: documentId, clientId: clientId, content: content))
     }
     
@@ -50,7 +50,7 @@ class DocUtil {
         return ShadowDocument(clientVersion: 0, serverVersion: 0, clientDocument: ClientDocument(id: documentId, clientId: clientId, content: content))
     }
     
-    func shadow<T>(doc: ClientDocument<T>) -> ShadowDocument<T> {
+    func shadow<T>(_ doc: ClientDocument<T>) -> ShadowDocument<T> {
         return ShadowDocument(clientVersion: 0, serverVersion: 0, clientDocument: doc)
     }
     

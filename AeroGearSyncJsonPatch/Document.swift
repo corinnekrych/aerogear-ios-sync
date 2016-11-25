@@ -22,17 +22,17 @@ Represents the server side version of a document.
 <br/><br/>
 ```<T>``` the type of the document contents.
 */
-public class Document<T>: CustomStringConvertible {
+open class Document<T>: CustomStringConvertible {
     
     /**
     The identifier for a document.
     */
-    public let id: String
+    open let id: String
     
     /**
     The content for a document.
     */
-    public let content: T
+    open let content: T
     
     /**
     Default init.
@@ -48,7 +48,7 @@ public class Document<T>: CustomStringConvertible {
     /**
     Printable protocol implementation, provides a string representation of the object.
     */
-    public var description: String {
+    open var description: String {
         return "Document[id=\(id), content=\(content)]"
     }
     
