@@ -103,7 +103,7 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
             }
         }
         
-        return asJsonString(dict)!
+        return asJsonString(dict: dict)!
     }
     
     /**
@@ -112,8 +112,8 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - parameter json: a string representation of this payloads type.
     - returns: JsonPatchMessage an instance of this payloads type.
     */
-    public func fromJson(_ json:String) -> JsonPatchMessage? {
-        if let dict = asDictionary(json) {
+    public func asPayload(json:String) -> JsonPatchMessage? {
+        if let dict = asDictionary(jsonString: json) {
             let id = dict["id"] as! String
             let clientId = dict["clientId"] as! String
             var edits = [JsonPatchEdit]()
@@ -147,7 +147,7 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - parameter jsonString: the JSON string to convert into a Dictionary
     - returns: Optional Dictionary<String, AnyObject>
     */
-    public func asDictionary(_ jsonString: String) -> [String: AnyObject]? {
+    public func asDictionary(jsonString: String) -> [String: AnyObject]? {
         return try! JSONSerialization.jsonObject(with: (jsonString as NSString).data(using: String.Encoding.utf8.rawValue)!,
             options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: AnyObject]
     }
@@ -158,7 +158,7 @@ public struct JsonPatchMessage: PatchMessage, CustomStringConvertible {
     - parameter the: Dictionary<String, AnyObject> to try to convert.
     - returns: optionally the JSON string representation for the dictionary.
     */
-    public func asJsonString(_ dict: [String:  Any]) -> String? {
+    public func asJsonString(dict: [String:  Any]) -> String? {
         var data: Data?
         do {
             data = try JSONSerialization.data(withJSONObject: dict, options:JSONSerialization.WritingOptions(rawValue: 0))

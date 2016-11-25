@@ -38,5 +38,5 @@ public protocol Payload {
     - parameter json: a string representation of this payloads type.
     - returns: T an instance of this payloads type.
     */
-    func fromJson(_ json:String) -> T?
+    func asPayload(json:String) -> T?
 }

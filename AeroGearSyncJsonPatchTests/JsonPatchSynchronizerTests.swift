@@ -35,7 +35,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["key1": "value1" as AnyObject, "key2": "value2" as AnyObject]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
-        let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
+        let edit = clientSynchronizer.clientDiff(clientDocument: updated, shadow: shadowDoc)
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(1, edit.diffs.count)
@@ -49,7 +49,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["key1": "value1" as AnyObject]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
-        let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
+        let edit = clientSynchronizer.clientDiff(clientDocument: updated, shadow: shadowDoc)
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(1, edit.diffs.count)
@@ -63,7 +63,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["key1": "value1", "key2": "value3", "key3": ["key2.1": "value2.1"]]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2) //clientDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit
-        let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
+        let edit = clientSynchronizer.clientDiff(clientDocument: updated, shadow: shadowDoc)
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(2, edit.diffs.count)
@@ -80,7 +80,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["key1": "value1", "key2": ["key2.1": "value2.1", "key3": "value3"]]
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
-        let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
+        let edit = clientSynchronizer.clientDiff(clientDocument: updated, shadow: shadowDoc)
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(2, edit.diffs.count)
@@ -101,7 +101,7 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["key1": "value1" as AnyObject, "key2": "value2" as AnyObject]
         let shadowDoc = util.shadow(doc1)
         let serverDoc = util.document(doc2)
-        let edit = clientSynchronizer.serverDiff(serverDoc, shadow: shadowDoc)
+        let edit = clientSynchronizer.serverDiff(serverDocument: serverDoc, shadow: shadowDoc)
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
         XCTAssertEqual(1, edit.diffs.count)
@@ -116,9 +116,9 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let sourceDoc: JsonNode = ["name": "Fletch" as AnyObject, "firstname": "Robert" as AnyObject]
         let client = util.document(cientDoc)
         let source = util.shadow(sourceDoc)
-        let edit = clientSynchronizer.serverDiff(client, shadow: source)
+        let edit = clientSynchronizer.serverDiff(serverDocument: client, shadow: source)
         
-        let patchedDoc = clientSynchronizer.patchShadow(edit, shadow: source)
+        let patchedDoc = clientSynchronizer.patchShadow(edit: edit, shadow: source)
         
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
@@ -132,9 +132,9 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["name": "Fletch", "firstname": "Robert"]
         let source = util.document(doc1)
         let updated = util.shadow(doc2)
-        let edit = clientSynchronizer.clientDiff(source, shadow: updated)
+        let edit = clientSynchronizer.clientDiff(clientDocument: source, shadow: updated)
         
-        let patchedDoc = clientSynchronizer.patchDocument(edit, clientDocument: source)
+        let patchedDoc = clientSynchronizer.patchDocument(edit: edit, clientDocument: source)
         
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);
@@ -148,9 +148,9 @@ class JsonPatchSynchronizerTests: XCTestCase {
         let doc2: JsonNode = ["name": "Fletch", "firstname": "Robert", "friends": [["name": "Blanc", "firstname": "Sebastien"]]]
         let source = util.document(doc1)
         let updated = util.shadow(doc2)
-        let edit = clientSynchronizer.clientDiff(source, shadow: updated)
+        let edit = clientSynchronizer.clientDiff(clientDocument: source, shadow: updated)
         
-        let patchedDoc = clientSynchronizer.patchDocument(edit, clientDocument: source)
+        let patchedDoc = clientSynchronizer.patchDocument(edit: edit, clientDocument: source)
         
         XCTAssertEqual(util.clientId, edit.clientId);
         XCTAssertEqual(util.documentId, edit.documentId);

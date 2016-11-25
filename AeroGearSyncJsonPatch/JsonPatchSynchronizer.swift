@@ -36,13 +36,13 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter document: the ClientDocument.
     - returns: Edit the edit representing the diff between the shadow document and the client document.
     */
-    open func clientDiff(_ clientDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit {
+    open func clientDiff(clientDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit {
         let diffsList:[NSDictionary] = JSONPatch.createPatchesComparingCollectionsOld(clientDocument.content, toNew:shadow.clientDocument.content) as! [NSDictionary]
-        return edit(shadow.clientDocument, shadow: shadow, diffs: diffsList)
+        return edit(clientDocument: shadow.clientDocument, shadow: shadow, diffs: diffsList)
     }
 
-    fileprivate func edit(_ clientDoc: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>, diffs: [NSDictionary]) -> JsonPatchEdit {
-        return JsonPatchEdit(clientId: clientDoc.clientId, documentId: clientDoc.id, clientVersion: shadow.clientVersion, serverVersion: shadow.serverVersion, checksum: "", diffs: asAeroGearDiffs(diffs))
+    fileprivate func edit(clientDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>, diffs: [NSDictionary]) -> JsonPatchEdit {
+        return JsonPatchEdit(clientId: clientDocument.clientId, documentId: clientDocument.id, clientVersion: shadow.clientVersion, serverVersion: shadow.serverVersion, checksum: "", diffs: asAeroGearDiffs(diffs))
     }
     
     fileprivate func asAeroGearDiffs(_ diffs: [NSDictionary]) -> [JsonPatchDiff] {
@@ -81,7 +81,7 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter document: the ClientDocument to be patched.
     - returns: ClientDocument a new patched document.
     */
-    open func patchDocument(_ edit: JsonPatchEdit, clientDocument: ClientDocument<JsonNode>) -> ClientDocument<JsonNode> {
+    open func patchDocument(edit: JsonPatchEdit, clientDocument: ClientDocument<JsonNode>) -> ClientDocument<JsonNode> {
         // we need a mutable copy of the json node
         // https://github.com/grgcombs/JSONTools/blob/master/JSONTools%2FJSONPatch.m#L424
         let collection = clientDocument.content as NSDictionary
@@ -94,7 +94,7 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
         var diffWithGetOperation = edit.diffs
         diffWithGetOperation.append(JsonPatchDiff(operation: JsonPatchDiff.Operation.Get))
         
-        let results: AnyObject! = JSONPatch.applyPatches(asJsonPatchDiffs(diffWithGetOperation) as [AnyObject], toCollection: mutableCollection) as AnyObject!
+        let results: AnyObject! = JSONPatch.applyPatches(asJsonPatchDiffs(diffs: diffWithGetOperation) as [AnyObject], toCollection: mutableCollection) as AnyObject!
         return ClientDocument<JsonNode>(id: clientDocument.id, clientId: clientDocument.clientId, content: results as! JsonNode)
     }
     
@@ -105,8 +105,8 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter shadowDocument: the ShadowDocument to be patched.
     - returns: ShadowDocument a new patched shadow document.
     */
-    open func patchShadow(_ edit: JsonPatchEdit, shadow: ShadowDocument<JsonNode>) -> ShadowDocument<JsonNode> {
-        return ShadowDocument(clientVersion: edit.clientVersion, serverVersion: shadow.serverVersion, clientDocument: patchDocument(edit, clientDocument: shadow.clientDocument))
+    open func patchShadow(edit: JsonPatchEdit, shadow: ShadowDocument<JsonNode>) -> ShadowDocument<JsonNode> {
+        return ShadowDocument(clientVersion: edit.clientVersion, serverVersion: shadow.serverVersion, clientDocument: patchDocument(edit: edit, clientDocument: shadow.clientDocument))
     }
     
     /**
@@ -121,12 +121,12 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter shadowDocument: the ShadowDocument for the ClientDocument.
     - returns: Edit the edit representing the diff between the client document and it's shadow document.
     */
-    open func serverDiff(_ serverDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit {
+    open func serverDiff(serverDocument: ClientDocument<JsonNode>, shadow: ShadowDocument<JsonNode>) -> JsonPatchEdit {
         let diffsList:[NSDictionary] = JSONPatch.createPatchesComparingCollectionsOld(shadow.clientDocument.content, toNew:serverDocument.content) as! [NSDictionary]
-        return edit(shadow.clientDocument, shadow: shadow, diffs: diffsList)
+        return edit(clientDocument: shadow.clientDocument, shadow: shadow, diffs: diffsList)
     }
 
-    fileprivate func asJsonPatchDiffs(_ diffs: [JsonPatchDiff]) -> [[String: Any]] {
+    fileprivate func asJsonPatchDiffs(diffs: [JsonPatchDiff]) -> [[String: Any]] {
         return diffs.map { ["op": $0.operation.rawValue, "path": $0.path, "value": $0.value ?? ""] }
     }
     
@@ -136,8 +136,8 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter json: the json representation of a PatchMessage.
     - returns: PatchMessage the created PatchMessage.
     */
-    open func patchMessageFromJson(_ json: String) -> JsonPatchMessage? {
-        return JsonPatchMessage().fromJson(json)
+    open func patchMessageFromJson(json: String) -> JsonPatchMessage? {
+        return JsonPatchMessage().asPayload(json: json)
     }
     
     /**
@@ -149,7 +149,7 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter edits: the Edits for the PatchMessage.
     - returns: PatchMessage the created PatchMessage.
     */
-    open func createPatchMessage(_ id: String, clientId: String, edits: [JsonPatchEdit]) -> JsonPatchMessage? {
+    open func createPatchMessage(id: String, clientId: String, edits: [JsonPatchEdit]) -> JsonPatchMessage? {
         return JsonPatchMessage(id: id, clientId: clientId, edits: edits)
     }
     
@@ -169,10 +169,10 @@ open class JsonPatchSynchronizer: ClientSynchronizer {
     - parameter objectNode: as a string to add the content to.
     - parameter fieldName: the name of the field.
     */
-    open func addContent(_ clientDocument:ClientDocument<JsonNode>, fieldName:String, objectNode:inout String) {
+    open func add(content: ClientDocument<JsonNode>, fieldName:String, objectNode:inout String) {
         objectNode += "\"content\":"
         // convert client document to json
-        let data = try! JSONSerialization.data(withJSONObject: clientDocument.content, options:JSONSerialization.WritingOptions(rawValue: 0))
+        let data = try! JSONSerialization.data(withJSONObject: content.content, options:JSONSerialization.WritingOptions(rawValue: 0))
         objectNode += NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
     }
 }

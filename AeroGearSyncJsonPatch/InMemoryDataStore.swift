@@ -44,7 +44,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     
     - parameter clientDocument: the ClientDocument to save.
     */
-    open func saveClientDocument(_ document: ClientDocument<T>) {
+    open func save(clientDocument document: ClientDocument<T>) {
         let key = InMemoryDataStore.key(document.id, document.clientId)
         documents[key] = document
     }
@@ -56,7 +56,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter clientId: the client for which to retrieve the shadow document.
     - returns:  ClientDocument the client document matching the documentId.
     */
-    open func getClientDocument(_ documentId: String, clientId: String) -> ClientDocument<T>? {
+    open func getClientDocument(documentId: String, clientId: String) -> ClientDocument<T>? {
         return documents[InMemoryDataStore.key(documentId, clientId)]
     }
     
@@ -65,7 +65,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     
     - parameter shadowDocument: the ShadowDocument to save.
     */
-    open func saveShadowDocument(_ shadow: ShadowDocument<T>) {
+    open func save(shadowDocument shadow: ShadowDocument<T>) {
         let key = InMemoryDataStore.key(shadow.clientDocument.id, shadow.clientDocument.clientId)
         shadows[key] = shadow
     }
@@ -77,7 +77,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter clientId: the client for which to retrieve the shadow document.
     - returns:  ShadowDocument the shadow document matching the documentId.
     */
-    open func getShadowDocument(_ documentId: String, clientId: String) -> ShadowDocument<T>? {
+    open func getShadowDocument(documentId: String, clientId: String) -> ShadowDocument<T>? {
         return shadows[InMemoryDataStore.key(documentId, clientId)]
     }
     
@@ -86,9 +86,9 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     
     - parameter backupShadow: the BackupShadowDocument to save.
     */
-    open func saveBackupShadowDocument(_ backup: BackupShadowDocument<T>) {
-        let key = InMemoryDataStore.key(backup.shadowDocument.clientDocument.id, backup.shadowDocument.clientDocument.clientId)
-        backups[key] = backup
+    open func save(backupShadowDocument: BackupShadowDocument<T>) {
+        let key = InMemoryDataStore.key(backupShadowDocument.shadowDocument.clientDocument.id, backupShadowDocument.shadowDocument.clientDocument.clientId)
+        backups[key] = backupShadowDocument
     }
     
     /**
@@ -98,7 +98,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter clientId: the client identifier for which to fetch the document.
     - returns: BackupShadowDocument the backup shadow document matching the documentId.
     */
-    open func getBackupShadowDocument(_ documentId: String, clientId: String) -> BackupShadowDocument<T>? {
+    open func getBackupShadowDocument(documentId: String, clientId: String) -> BackupShadowDocument<T>? {
         return backups[InMemoryDataStore.key(documentId, clientId)]
     }
     
@@ -109,7 +109,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter documentId: the document identifier for the edit.
     - parameter clientId: the client identifier for the edit.
     */
-    open func saveEdits(_ edit: E) {
+    open func save(edit: E) {
         let key = InMemoryDataStore.key(edit.documentId, edit.clientId)
         if var pendingEdits = self.edits[key] {
             pendingEdits!.append(edit)
@@ -126,7 +126,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter clientId: the client identifier for which to fetch the document.
     - returns: [D] the edits for the document.
     */
-    open func getEdits(_ documentId: String, clientId: String) -> [E]? {
+    open func getEdits(documentId: String, clientId: String) -> [E]? {
         if edits[InMemoryDataStore.key(documentId, clientId)] == nil {
             return nil
         } else {
@@ -141,7 +141,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter documentId: the document identifier for the edit.
     - parameter clientId: the client identifier for the edit.
     */
-    open func removeEdit(_ edit: E) {
+    open func remove(edit: E) {
         let key = InMemoryDataStore.key(edit.documentId, edit.clientId)
         if let pendingEdits = edits[key] {
             edits.updateValue(pendingEdits!.filter { edit.serverVersion != $0.serverVersion }, forKey: key)
@@ -154,7 +154,7 @@ open class InMemoryDataStore<T, E: Edit>: DataStore {
     - parameter documentId: the document identifier of the edit.
     - parameter clientId: the client identifier.
     */
-    open func removeEdits(_ documentId: String, clientId: String) {
+    open func removeEdits(documentId: String, clientId: String) {
         edits.removeValue(forKey: Key(id: documentId, clientId: clientId))
     }
 

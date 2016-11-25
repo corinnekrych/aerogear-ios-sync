@@ -78,11 +78,11 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
     
     - parameter document: the document to add.
     */
-    open func addDocument(_ clientDocument: ClientDocument<T>, callback: @escaping (ClientDocument<T>) -> ()) {
-        dataStore.saveClientDocument(clientDocument)
+    open func add(clientDocument: ClientDocument<T>, callback: @escaping (ClientDocument<T>) -> ()) {
+        dataStore.save(clientDocument: clientDocument)
         let shadow = ShadowDocument(clientVersion: 0, serverVersion: 0, clientDocument: clientDocument)
-        dataStore.saveShadowDocument(shadow)
-        dataStore.saveBackupShadowDocument(BackupShadowDocument(version: 0, shadowDocument: shadow))
+        dataStore.save(shadowDocument: shadow)
+        dataStore.save(backupShadowDocument: BackupShadowDocument(version: 0, shadowDocument: shadow))
         callbacks[clientDocument.id] = callback
     }
 
@@ -101,14 +101,14 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
     - returns: PatchMessage containing the edits for the changes in the document.
     */
 
-    open func diff(_ clientDocument: ClientDocument<T>) -> P? {
-        if let shadow = dataStore.getShadowDocument(clientDocument.id, clientId: clientDocument.clientId) {
-            let edit = diffAgainstShadow(clientDocument, shadow: shadow)
-            dataStore.saveEdits(edit)
-            let patched = synchronizer.patchShadow(edit, shadow: shadow)
-            dataStore.saveShadowDocument(incrementClientVersion(patched))
-            if let edits = dataStore.getEdits(clientDocument.id, clientId: clientDocument.clientId) {
-                return synchronizer.createPatchMessage(clientDocument.id, clientId: clientDocument.clientId, edits: edits)
+    open func diff(clientDocument: ClientDocument<T>) -> P? {
+        if let shadow = dataStore.getShadowDocument(documentId: clientDocument.id, clientId: clientDocument.clientId) {
+            let edit = diffAgainstShadow(clientDocument: clientDocument, shadow: shadow)
+            dataStore.save(edit: edit)
+            let patched = synchronizer.patchShadow(edit: edit, shadow: shadow)
+            dataStore.save(shadowDocument: incrementClientVersion(shadow: patched))
+            if let edits = dataStore.getEdits(documentId: clientDocument.id, clientId: clientDocument.clientId) {
+                return synchronizer.createPatchMessage(id: clientDocument.id, clientId: clientDocument.clientId, edits: edits)
             }
         }
         return Optional.none
@@ -123,35 +123,35 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
     
     - parameter patchMessage: the updates from the server.
     */
-    open func patch(_ patchMessage: P) {
-        if let patched = patchShadow(patchMessage) {
+    open func patch(patchMessage: P) {
+        if let patched = patchShadow(patchMessage: patchMessage) {
             let callback = callbacks[patchMessage.documentId!]!
-            callback(patchDocument(patched)!)
+            callback(patchDocument(shadow: patched)!)
 
-            dataStore.saveBackupShadowDocument(BackupShadowDocument(version: patched.clientVersion, shadowDocument: patched))
+            dataStore.save(backupShadowDocument: BackupShadowDocument(version: patched.clientVersion, shadowDocument: patched))
         }
     }
 
-    fileprivate func patchShadow(_ patchMessage: P) -> ShadowDocument<T>? {
+    fileprivate func patchShadow(patchMessage: P) -> ShadowDocument<T>? {
         if let edits = patchMessage.edits, let documentId = patchMessage.documentId, let clientId = patchMessage.clientId {
-            if var shadow = dataStore.getShadowDocument(documentId, clientId: clientId) {
+            if var shadow = dataStore.getShadowDocument(documentId: documentId, clientId: clientId) {
                 for edit in edits {
                     if edit.serverVersion < shadow.serverVersion {
-                        dataStore.removeEdit(edit)
+                        dataStore.remove(edit: edit)
                         continue
                     }
                     if (edit.clientVersion < shadow.clientVersion && !self.isSeedVersion(edit)) {
-                        if let _ = restoreBackup(shadow, edit: edit) {
+                        if let _ = restoreBackup(fromShadow: shadow, edit: edit) {
                             continue
                         }
                     }
                     if edit.serverVersion == shadow.serverVersion && edit.clientVersion == shadow.clientVersion || isSeedVersion(edit) {
-                        let patched = synchronizer.patchShadow(edit, shadow: shadow)
-                        dataStore.removeEdit(edit)
+                        let patched = synchronizer.patchShadow(edit: edit, shadow: shadow)
+                        dataStore.remove(edit: edit)
                         if isSeedVersion(edit) {
-                            shadow = saveShadow(seededShadowDocument(patched))
+                            shadow = save(shadow: seededShadowDocument(from: patched))
                         } else {
-                            shadow = saveShadow(incrementServerVersion(patched))
+                            shadow = save(shadow: incrementServerVersion(shadow: patched))
                         }
                     }
                 }
@@ -161,29 +161,29 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
         return .none
     }
 
-    fileprivate func seededShadowDocument(_ from: ShadowDocument<T>) -> ShadowDocument<T> {
+    fileprivate func seededShadowDocument(from: ShadowDocument<T>) -> ShadowDocument<T> {
         return ShadowDocument(clientVersion: 0, serverVersion: from.serverVersion, clientDocument: from.clientDocument)
     }
 
-    fileprivate func incrementClientVersion(_ shadow: ShadowDocument<T>) -> ShadowDocument<T> {
+    fileprivate func incrementClientVersion(shadow: ShadowDocument<T>) -> ShadowDocument<T> {
         return ShadowDocument(clientVersion: shadow.clientVersion + 1, serverVersion: shadow.serverVersion, clientDocument: shadow.clientDocument)
     }
 
-    fileprivate func incrementServerVersion(_ shadow: ShadowDocument<T>) -> ShadowDocument<T> {
+    fileprivate func incrementServerVersion(shadow: ShadowDocument<T>) -> ShadowDocument<T> {
         return ShadowDocument(clientVersion: shadow.clientVersion, serverVersion: shadow.serverVersion + 1, clientDocument: shadow.clientDocument)
     }
 
-    fileprivate func saveShadow(_ shadow: ShadowDocument<T>) -> ShadowDocument<T> {
-        dataStore.saveShadowDocument(shadow)
+    fileprivate func save(shadow: ShadowDocument<T>) -> ShadowDocument<T> {
+        dataStore.save(shadowDocument: shadow)
         return shadow
     }
 
-    fileprivate func restoreBackup(_ shadow: ShadowDocument<T>, edit: E) -> ShadowDocument<T>? {
-        if let backup = dataStore.getBackupShadowDocument(edit.documentId, clientId: edit.clientId) {
+    fileprivate func restoreBackup(fromShadow: ShadowDocument<T>, edit: E) -> ShadowDocument<T>? {
+        if let backup = dataStore.getBackupShadowDocument(documentId: edit.documentId, clientId: edit.clientId) {
             if edit.clientVersion == backup.version {
-                let patchedShadow = synchronizer.patchShadow(edit, shadow: ShadowDocument(clientVersion: shadow.clientVersion, serverVersion: shadow.serverVersion, clientDocument: shadow.clientDocument))
-                dataStore.removeEdits(edit.documentId, clientId: edit.clientId)
-                dataStore.saveShadowDocument(patchedShadow)
+                let patchedShadow = synchronizer.patchShadow(edit: edit, shadow: ShadowDocument(clientVersion: fromShadow.clientVersion, serverVersion: fromShadow.serverVersion, clientDocument: fromShadow.clientDocument))
+                dataStore.removeEdits(documentId: edit.documentId, clientId: edit.clientId)
+                dataStore.save(shadowDocument: patchedShadow)
                 return patchedShadow
             }
         }
@@ -194,16 +194,16 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
         return edit.clientVersion == -1
     }
 
-    fileprivate func diffAgainstShadow(_ clientDocument: ClientDocument<T>, shadow: ShadowDocument<T>) -> E {
-        return synchronizer.serverDiff(clientDocument, shadow: shadow)
+    fileprivate func diffAgainstShadow(clientDocument: ClientDocument<T>, shadow: ShadowDocument<T>) -> E {
+        return synchronizer.serverDiff(serverDocument: clientDocument, shadow: shadow)
     }
 
-    fileprivate func patchDocument(_ shadow: ShadowDocument<T>) -> ClientDocument<T>? {
-        if let document = dataStore.getClientDocument(shadow.clientDocument.id, clientId: shadow.clientDocument.clientId) {
-            let edit = synchronizer.clientDiff(document, shadow: shadow)
-            let patched = synchronizer.patchDocument(edit, clientDocument: document)
-            dataStore.saveClientDocument(patched)
-            dataStore.saveBackupShadowDocument(BackupShadowDocument(version: shadow.clientVersion, shadowDocument: shadow))
+    fileprivate func patchDocument(shadow: ShadowDocument<T>) -> ClientDocument<T>? {
+        if let document = dataStore.getClientDocument(documentId: shadow.clientDocument.id, clientId: shadow.clientDocument.clientId) {
+            let edit = synchronizer.clientDiff(clientDocument: document, shadow: shadow)
+            let patched = synchronizer.patchDocument(edit: edit, clientDocument: document)
+            dataStore.save(clientDocument: patched)
+            dataStore.save(backupShadowDocument: BackupShadowDocument(version: shadow.clientVersion, shadowDocument: shadow))
             return patched
         }
         return Optional.none
@@ -215,21 +215,9 @@ open class ClientSyncEngine<CS:ClientSynchronizer, D:DataStore> where CS.T == D.
     - parameter json: string representation.
     - returns: PatchMessage created fron jsons string.
     */
-    open func patchMessageFromJson(_ json: String) -> P? {
-        return synchronizer.patchMessageFromJson(json)
+    open func patchMessageFromJson(json: String) -> P? {
+        return synchronizer.patchMessageFromJson(json: json)
     }
     
-    /**
-    Delegate to Synchronizer.addContent.
-    
-    - parameter clientDocument: the content itself.
-    - returns: String with all ClientDocument information.
-    */
-    open func documentToJson(_ clientDocument:ClientDocument<T>) -> String {
-        var str = "{\"msgType\":\"add\",\"id\":\"" + clientDocument.id + "\",\"clientId\":\"" + clientDocument.clientId + "\","
-        synchronizer.addContent(clientDocument, fieldName: "content", objectNode: &str)
-        str += "}"
-        return str
-    }
 }
 

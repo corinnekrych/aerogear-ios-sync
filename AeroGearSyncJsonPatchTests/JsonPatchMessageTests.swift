@@ -32,13 +32,13 @@ class JsonPatchMessageTests: XCTestCase {
         let updated = util.document(doc1)
         let shadowDoc = util.shadow(doc2)
         let clientSynchronizer = JsonPatchSynchronizer()
-        let edit = clientSynchronizer.clientDiff(updated, shadow: shadowDoc)
+        let edit = clientSynchronizer.clientDiff(clientDocument: updated, shadow: shadowDoc)
         message = JsonPatchMessage(id: "1", clientId: "2", edits: [edit])        
     }
     
     func testAsJsonAndFromJson() {
         let jsonString = self.message.asJson()
-        let obj = message.fromJson(jsonString)!
+        let obj = message.asPayload(json: jsonString)!
         XCTAssertEqual("2", obj.clientId)
         XCTAssertEqual("1", obj.documentId)
         XCTAssertEqual("2", obj.clientId)
