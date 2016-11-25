@@ -1,6 +1,6 @@
 # aerogear ios sync [![Build Status](https://travis-ci.org/aerogear/aerogear-ios-sync.png)](https://travis-ci.org/aerogear/aerogear-ios-sync) [![Pod Version](http://img.shields.io/cocoapods/v/AeroGearSync.svg?style=flat)](http://cocoadocs.org/docsets/AeroGearSync/)
 
-> This module currently build with Xcode 7.3.1 or Xcode 8 (Swift 2.3) and supports iOS8, iOS9 and iOS 10.
+> This module currently build with Xcode 8 (Swift 3) and supports iOS8, iOS9 and iOS 10.
 
 AeroGear iOS Differential Synchronization Client Engine represents a client side implementation for [AeroGear Differential 
 Synchronization (DS) Server](https://github.com/aerogear/aerogear-sync-server/).
@@ -38,7 +38,7 @@ project 'YourProjectName.xcodeproj'
 platform :ios, '8.0'
 use_frameworks!
 target 'YourProjectName' do
-    pod 'AeroGearSync'
+    pod 'AeroGearSyncJsonPatch'
 end
 
 ```
