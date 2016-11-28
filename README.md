@@ -24,7 +24,7 @@ The project uses [cocoapods](http://cocoapods.org) for handling its dependencies
 ```bash
 pod install
 ```
-3. open AeroGearSync.xcworkspace
+3. open AeroGearSyncJsonPatch.xcworkspace
 
 ## Adding the library to your project 
 To add the library in your project, you can either use [CocoaPods](http://cocoapods.org) or manual install in your project. See the respective sections below for instructions:
